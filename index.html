@@ -76,38 +76,25 @@
         ::-webkit-scrollbar-thumb:hover { background: #00F0FF; }
 
         .glass-panel {
-            /* Darker glass for sections */
-            background: rgba(5, 5, 5, 0.7);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
-        }
-
-        .glass-card {
-            /* Darker, distinct glass for cards */
-            background: linear-gradient(145deg, rgba(20,20,20,0.7) 0%, rgba(20,20,20,0.4) 100%);
+            background: rgba(10, 10, 10, 0.6);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .glass-card {
+            background: linear-gradient(145deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
             transition: all 0.3s ease;
             pointer-events: auto; 
         }
 
         .glass-card:hover {
             border-color: #00F0FF;
-            background: linear-gradient(145deg, rgba(30,30,30,0.8) 0%, rgba(30,30,30,0.5) 100%);
-            box-shadow: 0 0 20px rgba(0, 240, 255, 0.1);
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.15);
             transform: scale(1.02);
-        }
-        
-        /* Specific Hero Card Style */
-        .glass-hero-card {
-            background: rgba(0, 0, 0, 0.6); /* Significant darkening */
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            box-shadow: 0 0 50px rgba(0,0,0,0.5);
         }
 
         .text-gradient {
@@ -126,22 +113,19 @@
         .translate-z-10 { transform: translateZ(20px); }
         .translate-z-20 { transform: translateZ(50px); }
 
-        /* Background Image Container */
-        #background-container {
+        /* Spline Container */
+        #spline-container {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100vh;
-            z-index: 0;
-            background-image: url('novus_back.webp');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-color: #050505; 
+            z-index: 0; 
+            transition: opacity 0.8s ease-in-out; /* Smooth transition for style switch */
         }
+        iframe { border: none; width: 100%; height: 100%; }
 
         .overlay-gradient {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100vh;
-            background: radial-gradient(circle at center, rgba(5,5,5,0.3) 0%, #050505 95%);
+            background: radial-gradient(circle at center, transparent 0%, #050505 90%);
             z-index: 1; pointer-events: none; 
         }
 
@@ -149,7 +133,7 @@
         #navbar, #smooth-wrapper, section, footer {
             position: relative; z-index: 10; pointer-events: none;
         }
-        a, button, .glass-card, .interactive-area, .pointer-events-auto, #eth-container, .glass-hero-card {
+        a, button, .glass-card, .interactive-area, .pointer-events-auto, #eth-container {
             pointer-events: auto; cursor: pointer;
         }
         
@@ -170,7 +154,10 @@
 <body class="antialiased selection:bg-novus-cyan selection:text-black">
 
     <!-- BACKGROUND SYSTEM -->
-    <div id="background-container"></div>
+    <div id="spline-container">
+        <!-- Default Start Style -->
+        <iframe id="spline-frame" src='https://my.spline.design/boxeshover-vRKy1mPv1f8VWmGFobsMyepi/' frameborder='0' width='100%' height='100%'></iframe>
+    </div>
     <div class="overlay-gradient"></div>
 
     <!-- NAVIGATION -->
@@ -190,7 +177,16 @@
                 <a href="#transparency" class="hover:text-novus-cyan transition-colors">Transparency</a>
             </div>
 
-            <div class="flex items-center gap-4">
+            <div class="flex items-center gap-3">
+                <!-- STYLE SWITCHER BUTTON -->
+                <button onclick="toggleStyle()" class="group relative flex items-center justify-center w-10 h-10 rounded-full border border-white/20 bg-white/5 hover:bg-white/10 transition-all hover:border-novus-purple" title="Switch Visual Style">
+                    <i data-lucide="layers" class="w-5 h-5 text-gray-300 group-hover:text-novus-purple transition-colors"></i>
+                    <!-- Tooltip hint (optional) -->
+                    <span class="absolute top-full mt-2 left-1/2 -translate-x-1/2 px-2 py-1 bg-black/80 text-[10px] text-white rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">
+                        Next Style
+                    </span>
+                </button>
+
                 <a href="https://app.uniswap.org" target="_blank" class="bg-white/10 hover:bg-novus-cyan hover:text-black border border-white/20 px-5 py-2 rounded-full text-sm font-bold transition-all duration-300 backdrop-blur-sm">
                     Buy Now
                 </a>
@@ -203,38 +199,35 @@
         <div id="smooth-content">
 
             <!-- HERO SECTION -->
-            <section class="min-h-screen flex flex-col justify-start items-center text-center px-4 relative pt-24 md:pt-28" id="about">
-                <div class="gsap-hero opacity-0 translate-y-10 w-full max-w-5xl mx-auto">
-                    <!-- Added Darkening Glass Card Container for Hero Content -->
-                    <div class="glass-hero-card p-10 md:p-14 rounded-[2rem] border border-white/10">
-                        <span class="inline-block py-1 px-3 rounded-full bg-novus-cyan/10 border border-novus-cyan/30 text-novus-cyan text-xs font-mono tracking-widest mb-6 pointer-events-auto">
-                            VERIFIED CONTRACT • DEFI REIMAGINED
-                        </span>
-                        <h1 class="font-display font-bold text-6xl md:text-8xl lg:text-9xl tracking-tighter mb-4 leading-tight">
-                            ENGINEERED <br>
-                            <span class="text-gradient">FOR GROWTH</span>
-                        </h1>
-                        <p class="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto mb-10 font-light">
-                            NOVUS X is built for the community. Safe, burnable, and ready to scale on the Ethereum Network.
-                        </p>
+            <section class="flex flex-col items-center text-center px-4 relative pt-32 pb-20 md:pt-44" id="about">
+                <div class="gsap-hero opacity-0 translate-y-10">
+                    <span class="inline-block py-1 px-3 rounded-full bg-novus-cyan/10 border border-novus-cyan/30 text-novus-cyan text-xs font-mono tracking-widest mb-6 pointer-events-auto">
+                        VERIFIED CONTRACT • DEFI REIMAGINED
+                    </span>
+                    <h1 class="font-display font-bold text-6xl md:text-8xl lg:text-9xl tracking-tighter mb-4 leading-tight">
+                        ENGINEERED <br>
+                        <span class="text-gradient">FOR GROWTH</span>
+                    </h1>
+                    <p class="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto mb-10 font-light">
+                        NOVUS X is built for the community. Safe, burnable, and ready to scale on the Ethereum Network.
+                    </p>
+                    
+                    <div class="flex flex-col md:flex-row gap-4 justify-center items-center pointer-events-auto">
+                        <a href="https://app.uniswap.org" target="_blank" class="group relative px-8 py-4 bg-novus-cyan text-black font-bold rounded-lg overflow-hidden transition-all hover:shadow-[0_0_20px_rgba(0,240,255,0.4)]">
+                            <span class="relative z-10 flex items-center gap-2">
+                                Buy on Uniswap
+                            </span>
+                        </a>
                         
-                        <div class="flex flex-col md:flex-row gap-4 justify-center items-center pointer-events-auto">
-                            <a href="https://app.uniswap.org" target="_blank" class="group relative px-8 py-4 bg-novus-cyan text-black font-bold rounded-lg overflow-hidden transition-all hover:shadow-[0_0_20px_rgba(0,240,255,0.4)]">
-                                <span class="relative z-10 flex items-center gap-2">
-                                    Buy on Uniswap
-                                </span>
-                            </a>
-                            
-                            <a href="https://dexscreener.com" target="_blank" class="px-8 py-4 bg-white/5 border border-white/10 rounded-lg hover:bg-white/10 transition-all font-medium text-gray-300 flex items-center gap-2">
-                                Live Chart <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
-                            </a>
-                        </div>
+                        <a href="https://dexscreener.com" target="_blank" class="px-8 py-4 bg-white/5 border border-white/10 rounded-lg hover:bg-white/10 transition-all font-medium text-gray-300 flex items-center gap-2">
+                            Live Chart <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+                        </a>
+                    </div>
 
-                        <div class="mt-8 group pointer-events-auto cursor-pointer inline-block" onclick="copyContract()">
-                            <div class="font-mono text-xs text-gray-500 bg-black/40 px-4 py-2 rounded border border-white/5 inline-flex items-center gap-2 group-hover:border-novus-cyan transition-colors">
-                                <span id="btn-text">0x9cdb25BE428ED7C22Dcc1C10CA40726463AdcD63</span>
-                                <i data-lucide="copy" class="w-3 h-3"></i>
-                            </div>
+                    <div class="mt-8 group pointer-events-auto cursor-pointer" onclick="copyContract()">
+                        <div class="font-mono text-xs text-gray-500 bg-black/40 px-4 py-2 rounded border border-white/5 inline-flex items-center gap-2 group-hover:border-novus-cyan transition-colors">
+                            <span id="btn-text">0x9cdb25BE428ED7C22Dcc1C10CA40726463AdcD63</span>
+                            <i data-lucide="copy" class="w-3 h-3"></i>
                         </div>
                     </div>
                 </div>
@@ -540,6 +533,31 @@
                             <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&q=80&w=500" class="w-full h-full object-cover rounded-xl" alt="Work">
                             <div class="absolute bottom-2 left-2 bg-black/60 px-2 rounded text-[10px] text-novus-cyan backdrop-blur">EXECUTION</div>
                         </div>
+                        <!-- DUPLICATE FOR LOOP -->
+                        <div class="w-72 h-48 glass-card p-1 rounded-2xl flex-shrink-0 relative overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?auto=format&fit=crop&q=80&w=500" class="w-full h-full object-cover rounded-xl" alt="City">
+                            <div class="absolute bottom-2 left-2 bg-black/60 px-2 rounded text-[10px] text-white backdrop-blur">HQ</div>
+                        </div>
+                        <div class="w-72 h-48 glass-card p-1 rounded-2xl flex-shrink-0 relative overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=500" class="w-full h-full object-cover rounded-xl" alt="Code">
+                            <div class="absolute bottom-2 left-2 bg-black/60 px-2 rounded text-[10px] text-novus-cyan backdrop-blur">DEVELOPMENT</div>
+                        </div>
+                        <div class="w-72 h-48 glass-card p-1 rounded-2xl flex-shrink-0 relative overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=500" class="w-full h-full object-cover rounded-xl" alt="Deal">
+                            <div class="absolute bottom-2 left-2 bg-black/60 px-2 rounded text-[10px] text-white backdrop-blur">TRUST</div>
+                        </div>
+                        <div class="w-72 h-48 glass-card p-1 rounded-2xl flex-shrink-0 relative overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1504384308090-c54be3852f33?auto=format&fit=crop&q=80&w=500" class="w-full h-full object-cover rounded-xl" alt="Network">
+                            <div class="absolute bottom-2 left-2 bg-black/60 px-2 rounded text-[10px] text-novus-purple backdrop-blur">SECURITY</div>
+                        </div>
+                        <div class="w-72 h-48 glass-card p-1 rounded-2xl flex-shrink-0 relative overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&q=80&w=500" class="w-full h-full object-cover rounded-xl" alt="Handshake">
+                            <div class="absolute bottom-2 left-2 bg-black/60 px-2 rounded text-[10px] text-white backdrop-blur">AGREEMENT</div>
+                        </div>
+                         <div class="w-72 h-48 glass-card p-1 rounded-2xl flex-shrink-0 relative overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&q=80&w=500" class="w-full h-full object-cover rounded-xl" alt="Work">
+                            <div class="absolute bottom-2 left-2 bg-black/60 px-2 rounded text-[10px] text-novus-cyan backdrop-blur">EXECUTION</div>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -713,6 +731,36 @@
             blockHeight += Math.floor(Math.random() * 5);
             blockHeightEl.innerText = blockHeight.toLocaleString();
         }, 12000); // Ethereum block time approx 12s
+
+        // 5. STYLE SWITCHER LOGIC
+        let currentStyle = 1;
+        function toggleStyle() {
+            const iframe = document.getElementById('spline-frame');
+            const container = document.getElementById('spline-container');
+            
+            // Step 1: Fade out
+            container.style.opacity = '0';
+
+            // Step 2: Swap URL after fade out matches transition time (800ms defined in CSS)
+            // We use a slightly shorter timeout (500ms) to start loading sooner while still invisible
+            setTimeout(() => {
+                if (currentStyle === 1) {
+                    // Switch to Reactive Orb
+                    iframe.src = 'https://my.spline.design/reactiveorb-4ytbTLY5j6fTA04qX4qISj53/';
+                    currentStyle = 2;
+                } else {
+                    // Switch back to Boxes
+                    iframe.src = 'https://my.spline.design/boxeshover-vRKy1mPv1f8VWmGFobsMyepi/';
+                    currentStyle = 1;
+                }
+                
+                // Step 3: Fade back in
+                // Give the iframe a moment to initialize the load request
+                setTimeout(() => {
+                    container.style.opacity = '1';
+                }, 500); 
+            }, 500);
+        }
     </script>
 </body>
 </html>
