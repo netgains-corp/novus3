@@ -68,8 +68,10 @@
             background-color: #050505;
             color: #ffffff;
             overflow-x: hidden;
+            overflow-y: auto; /* Ensure native scroll works */
         }
         
+        /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #050505; }
         ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
@@ -113,12 +115,12 @@
         .translate-z-10 { transform: translateZ(20px); }
         .translate-z-20 { transform: translateZ(50px); }
 
-        /* Spline Container */
+        /* Spline Container - Fixed background */
         #spline-container {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100vh;
-            z-index: 0; 
-            transition: opacity 0.8s ease-in-out; /* Smooth transition for style switch */
+            z-index: -1; /* Behind everything */
+            transition: opacity 0.8s ease-in-out;
         }
         iframe { border: none; width: 100%; height: 100%; }
 
@@ -126,15 +128,16 @@
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100vh;
             background: radial-gradient(circle at center, transparent 0%, #050505 90%);
-            z-index: 1; pointer-events: none; 
+            z-index: -1; /* Behind content, above spline */
+            pointer-events: none; 
         }
 
         /* Interaction Fixes */
-        #navbar, #smooth-wrapper, section, footer {
-            position: relative; z-index: 10; pointer-events: none;
-        }
-        a, button, .glass-card, .interactive-area, .pointer-events-auto, #eth-container {
-            pointer-events: auto; cursor: pointer;
+        /* Removed the strict pointer-events: none from sections to allow scrolling everywhere */
+        #navbar {
+            position: sticky; /* Sticky navbar is better for UX */
+            top: 0;
+            z-index: 50;
         }
         
         .logo-item {
@@ -155,16 +158,17 @@
 
     <!-- BACKGROUND SYSTEM -->
     <div id="spline-container">
-        <!-- Default Start Style -->
-        <iframe id="spline-frame" src='https://my.spline.design/boxeshover-vRKy1mPv1f8VWmGFobsMyepi/' frameborder='0' width='100%' height='100%'></iframe>
+        <!-- Default Start Style: TickTock Interactive Landing -->
+        <iframe id="spline-frame" src='https://my.spline.design/ticktockinteractivelanding-SylE4FS9VIaBPANrCNHa9QQR/' frameborder='0' width='100%' height='100%'></iframe>
     </div>
     <div class="overlay-gradient"></div>
 
     <!-- NAVIGATION -->
-    <nav class="fixed top-0 w-full z-50 px-6 py-4 transition-all duration-300" id="navbar">
-        <div class="max-w-7xl mx-auto flex justify-between items-center glass-panel rounded-full px-6 py-3 pointer-events-auto"> 
+    <nav class="w-full px-6 py-4 transition-all duration-300" id="navbar">
+        <!-- Added explicit border-white/40 and style override to ensure visibility -->
+        <div class="max-w-7xl mx-auto flex justify-between items-center glass-panel rounded-full px-6 py-3 border-white/40" style="border-color: rgba(255,255,255,0.4);"> 
             
-            <div class="flex items-center gap-2 pointer-events-auto">
+            <div class="flex items-center gap-2">
                 <div class="w-8 h-8 rounded bg-gradient-to-br from-novus-cyan to-novus-purple flex items-center justify-center font-bold text-black font-display text-xl">X</div>
                 <span class="font-display font-bold text-xl tracking-wider">NOVUS X</span>
             </div>
@@ -194,462 +198,438 @@
         </div>
     </nav>
 
-    <!-- MAIN CONTENT WRAPPER -->
-    <div id="smooth-wrapper">
-        <div id="smooth-content">
-
-            <!-- HERO SECTION -->
-            <section class="flex flex-col items-center text-center px-4 relative pt-32 pb-20 md:pt-44" id="about">
-                <div class="gsap-hero opacity-0 translate-y-10">
-                    <span class="inline-block py-1 px-3 rounded-full bg-novus-cyan/10 border border-novus-cyan/30 text-novus-cyan text-xs font-mono tracking-widest mb-6 pointer-events-auto">
-                        VERIFIED CONTRACT • DEFI REIMAGINED
+    <!-- MAIN CONTENT WRAPPER REMOVED - DIRECT CONTENT -->
+    
+    <!-- HERO SECTION -->
+    <!-- Changed: Reduced padding-top significantly (pt-24 for mobile, md:pt-32 for desktop) -->
+    <section class="flex flex-col items-center text-center px-4 relative pt-24 pb-20 md:pt-32" id="about">
+        <div class="gsap-hero opacity-0 translate-y-10">
+            <span class="inline-block py-1 px-3 rounded-full bg-novus-cyan/10 border border-novus-cyan/30 text-novus-cyan text-xs font-mono tracking-widest mb-6">
+                VERIFIED CONTRACT • DEFI REIMAGINED
+            </span>
+            <h1 class="font-display font-bold text-6xl md:text-8xl lg:text-9xl tracking-tighter mb-4 leading-tight">
+                ENGINEERED <br>
+                <span class="text-gradient">FOR GROWTH</span>
+            </h1>
+            <p class="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto mb-10 font-light">
+                NOVUS X is built for the community. Safe, burnable, and ready to scale on the Ethereum Network.
+            </p>
+            
+            <div class="flex flex-col md:flex-row gap-4 justify-center items-center">
+                <a href="https://app.uniswap.org" target="_blank" class="group relative px-8 py-4 bg-novus-cyan text-black font-bold rounded-lg overflow-hidden transition-all hover:shadow-[0_0_20px_rgba(0,240,255,0.4)]">
+                    <span class="relative z-10 flex items-center gap-2">
+                        Buy on Uniswap
                     </span>
-                    <h1 class="font-display font-bold text-6xl md:text-8xl lg:text-9xl tracking-tighter mb-4 leading-tight">
-                        ENGINEERED <br>
-                        <span class="text-gradient">FOR GROWTH</span>
-                    </h1>
-                    <p class="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto mb-10 font-light">
-                        NOVUS X is built for the community. Safe, burnable, and ready to scale on the Ethereum Network.
-                    </p>
-                    
-                    <div class="flex flex-col md:flex-row gap-4 justify-center items-center pointer-events-auto">
-                        <a href="https://app.uniswap.org" target="_blank" class="group relative px-8 py-4 bg-novus-cyan text-black font-bold rounded-lg overflow-hidden transition-all hover:shadow-[0_0_20px_rgba(0,240,255,0.4)]">
-                            <span class="relative z-10 flex items-center gap-2">
-                                Buy on Uniswap
-                            </span>
-                        </a>
-                        
-                        <a href="https://dexscreener.com" target="_blank" class="px-8 py-4 bg-white/5 border border-white/10 rounded-lg hover:bg-white/10 transition-all font-medium text-gray-300 flex items-center gap-2">
-                            Live Chart <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
-                        </a>
-                    </div>
+                </a>
+                
+                <a href="https://dexscreener.com" target="_blank" class="px-8 py-4 bg-white/5 border border-white/10 rounded-lg hover:bg-white/10 transition-all font-medium text-gray-300 flex items-center gap-2">
+                    Live Chart <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+                </a>
+            </div>
 
-                    <div class="mt-8 group pointer-events-auto cursor-pointer" onclick="copyContract()">
-                        <div class="font-mono text-xs text-gray-500 bg-black/40 px-4 py-2 rounded border border-white/5 inline-flex items-center gap-2 group-hover:border-novus-cyan transition-colors">
-                            <span id="btn-text">0x9cdb25BE428ED7C22Dcc1C10CA40726463AdcD63</span>
-                            <i data-lucide="copy" class="w-3 h-3"></i>
-                        </div>
-                    </div>
+            <div class="mt-8 group cursor-pointer" onclick="copyContract()">
+                <div class="font-mono text-xs text-gray-500 bg-black/40 px-4 py-2 rounded border border-white/5 inline-flex items-center gap-2 group-hover:border-novus-cyan transition-colors">
+                    <span id="btn-text">0x9cdb25BE428ED7C22Dcc1C10CA40726463AdcD63</span>
+                    <i data-lucide="copy" class="w-3 h-3"></i>
                 </div>
-            </section>
-
-            <!-- INFRASTRUCTURE LOGOS -->
-            <section class="w-full bg-black/50 border-y border-white/5 backdrop-blur-sm py-8 overflow-hidden pointer-events-auto">
-                <p class="text-center text-xs text-gray-500 uppercase tracking-widest mb-6">Powered by infrastructure trusted by</p>
-                <div class="relative w-full flex overflow-x-hidden group">
-                    <div class="animate-marquee whitespace-nowrap flex gap-16 items-center px-10">
-                        <img src="https://cdn.simpleicons.org/ethereum/white" alt="Ethereum" class="logo-item">
-                        <img src="https://cdn.simpleicons.org/uniswap/white" alt="Uniswap" class="logo-item">
-                        <img src="https://cdn.simpleicons.org/google/white" alt="Google" class="logo-item">
-                        <img src="https://cdn.simpleicons.org/cloudflare/white" alt="Cloudflare" class="logo-item">
-                        <img src="https://cdn.simpleicons.org/visa/white" alt="Visa" class="logo-item">
-                        <img src="https://cdn.simpleicons.org/porsche/white" alt="Porsche" class="logo-item">
-                        <img src="https://cdn.simpleicons.org/proton/white" alt="Proton" class="logo-item">
-                        <img src="https://cdn.simpleicons.org/chainlink/white" alt="Chainlink" class="logo-item">
-                        <!-- Duplicate -->
-                        <img src="https://cdn.simpleicons.org/ethereum/white" alt="Ethereum" class="logo-item">
-                        <img src="https://cdn.simpleicons.org/uniswap/white" alt="Uniswap" class="logo-item">
-                        <img src="https://cdn.simpleicons.org/google/white" alt="Google" class="logo-item">
-                        <img src="https://cdn.simpleicons.org/cloudflare/white" alt="Cloudflare" class="logo-item">
-                        <img src="https://cdn.simpleicons.org/visa/white" alt="Visa" class="logo-item">
-                        <img src="https://cdn.simpleicons.org/porsche/white" alt="Porsche" class="logo-item">
-                    </div>
-                </div>
-            </section>
-
-            <!-- ETHEREUM NETWORK CONNECTION (NEW) -->
-            <section id="ethereum-network" class="py-24 px-6 relative z-10 flex flex-col items-center">
-                <!-- Headline -->
-                <div class="mb-12 text-center gsap-fade pointer-events-auto">
-                     <h2 class="font-display font-bold text-4xl mb-2">Ethereum <span class="text-gradient">Native</span></h2>
-                     <p class="text-gray-400">Directly connected to the world's most secure Layer-1 network.</p>
-                </div>
-        
-                <!-- 3D Tilt Card -->
-                <div id="eth-container" class="perspective-1000 w-full max-w-5xl mx-auto">
-                    <div id="eth-card" class="relative w-full aspect-[16/9] md:aspect-[21/9] rounded-3xl overflow-hidden glass-card transition-transform duration-100 ease-out preserve-3d shadow-2xl shadow-novus-purple/10">
-                        
-                        <!-- Background Image (Network) -->
-                        <div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 hover:scale-110" style="background-image: url('https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&q=80&w=2000'); filter: grayscale(100%) contrast(120%);"></div>
-                        
-                        <!-- Overlay Gradients -->
-                        <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
-                        <div class="absolute inset-0 bg-novus-purple/10 mix-blend-overlay"></div>
-        
-                        <!-- Floating Elements (3D depth) -->
-                        <div class="absolute inset-0 flex items-center justify-center translate-z-20">
-                             <!-- Ethereum SVG with Glow -->
-                             <div class="relative group">
-                                <div class="absolute inset-0 bg-novus-purple blur-[60px] opacity-20 group-hover:opacity-40 transition-opacity"></div>
-                                <svg class="relative w-32 h-32 md:w-48 md:h-48 text-gray-200 drop-shadow-2xl" viewBox="0 0 256 417" version="1.1" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid">
-                                    <path fill="currentColor" d="M127.9611 0l-2.795 9.5v275.668l2.795 2.79 127.962-75.638z" />
-                                    <path fill="#fff" d="M127.962 0L0 212.32l127.962 75.639V154.158z" />
-                                    <path fill="currentColor" d="M127.9611 312.187l-1.575 1.92v98.199l1.575 4.601 128.038-180.32z" />
-                                    <path fill="#fff" d="M127.962 416.905v-104.72L0 236.585z" />
-                                    <path fill="#d1d5db" d="M127.9611 287.958l127.96-75.637-127.96-58.162z" />
-                                    <path fill="#9ca3af" d="M0 212.32l127.96 75.638v-133.8z" />
-                                 </svg>
-                             </div>
-                        </div>
-                        
-                        <!-- Info HUD -->
-                        <div class="absolute bottom-8 left-8 translate-z-10 text-left bg-black/40 backdrop-blur-md p-4 rounded-xl border border-white/10">
-                            <div class="flex items-center gap-2 mb-2">
-                                <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                                <span class="text-xs font-mono text-green-400 tracking-widest">LIVE MAINNET</span>
-                            </div>
-                            <div class="text-2xl font-bold font-display text-white mb-1">ERC-20 Standard</div>
-                            <div class="text-xs text-gray-400 font-mono">
-                                Block Height: <span id="block-height" class="text-novus-purple">19,420,xxx</span> <br>
-                                Gas: <span class="text-white">12 Gwei</span>
-                            </div>
-                        </div>
-
-                         <!-- Grid Overlay -->
-                         <div class="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay pointer-events-none"></div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- TOKENOMICS -->
-            <section id="tokenomics" class="py-32 px-6 relative z-10">
-                <div class="max-w-7xl mx-auto">
-                    <div class="flex flex-col md:flex-row justify-between items-end mb-16 border-b border-white/10 pb-8 gsap-fade pointer-events-none">
-                        <div>
-                            <h2 class="font-display font-bold text-5xl mb-2">Tokenomics</h2>
-                            <p class="text-novus-cyan">Secured by Math.</p>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div class="glass-card p-8 rounded-2xl relative overflow-hidden group gsap-fade">
-                            <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-30 transition-opacity"><i data-lucide="flame" class="w-24 h-24 text-novus-purple"></i></div>
-                            <h3 class="text-gray-400 font-mono text-sm mb-2">DEFLATIONARY</h3>
-                            <p class="text-gray-300 text-sm leading-relaxed">NOVUS X features a built-in burn mechanism. Every transaction contributes to reducing the supply, increasing scarcity and value over time.</p>
-                        </div>
-
-                        <div class="glass-card p-8 rounded-2xl relative overflow-hidden group gsap-fade">
-                            <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-30 transition-opacity"><i data-lucide="shield-check" class="w-24 h-24 text-novus-cyan"></i></div>
-                            <h3 class="text-gray-400 font-mono text-sm mb-2">UNRUGGABLE</h3>
-                            <p class="text-gray-300 text-sm leading-relaxed">Liquidity is locked and ownership is managed via a secure AccessControl standard. The contract is fully verified on Etherscan.</p>
-                        </div>
-
-                        <div class="glass-card p-8 rounded-2xl relative overflow-hidden group gsap-fade">
-                            <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-30 transition-opacity"><i data-lucide="gem" class="w-24 h-24 text-white"></i></div>
-                            <h3 class="text-gray-400 font-mono text-sm mb-2">COMMUNITY FIRST</h3>
-                            <p class="text-gray-300 text-sm leading-relaxed">No private presales for VCs. A fair launch for everyone. The liquidity pool was funded 100% by the team to ensure a safe start.</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- EVOLUTION SECTION -->
-            <section id="evolution" class="py-20 px-6 relative z-10 pointer-events-auto">
-                <div class="max-w-5xl mx-auto glass-panel rounded-3xl p-8 md:p-12">
-                    <div class="text-center mb-12 gsap-fade">
-                        <h2 class="font-display font-bold text-3xl md:text-4xl">The Next <span class="text-gradient">Evolution</span></h2>
-                        <p class="text-gray-400 mt-2">A Web3 approach to distributing computing power globally.</p>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <div class="flex gap-4 gsap-fade">
-                            <div class="bg-novus-cyan/10 p-3 rounded-lg h-fit text-novus-cyan"><i data-lucide="cpu"></i></div>
-                            <div>
-                                <h4 class="font-bold text-lg mb-1">1. Modernization</h4>
-                                <p class="text-sm text-gray-400">Decentralized server structures replacing vulnerable centralized systems. Stable and future-proof.</p>
-                            </div>
-                        </div>
-                        <div class="flex gap-4 gsap-fade">
-                            <div class="bg-novus-purple/10 p-3 rounded-lg h-fit text-novus-purple"><i data-lucide="zap"></i></div>
-                            <div>
-                                <h4 class="font-bold text-lg mb-1">2. Performance</h4>
-                                <p class="text-sm text-gray-400">Works like a decentralized CDN. Reduced load times, balanced loads, and improved Core Web Vitals.</p>
-                            </div>
-                        </div>
-                        <div class="flex gap-4 gsap-fade">
-                            <div class="bg-white/10 p-3 rounded-lg h-fit text-white"><i data-lucide="lock"></i></div>
-                            <div>
-                                <h4 class="font-bold text-lg mb-1">3. Security</h4>
-                                <p class="text-sm text-gray-400">Economic barriers make malicious traffic unprofitable. DDoS defense via decentralized load balancing.</p>
-                            </div>
-                        </div>
-                        <div class="flex gap-4 gsap-fade">
-                            <div class="bg-novus-cyan/10 p-3 rounded-lg h-fit text-novus-cyan"><i data-lucide="briefcase"></i></div>
-                            <div>
-                                <h4 class="font-bold text-lg mb-1">4. Business Tools</h4>
-                                <p class="text-sm text-gray-400">Scalable infrastructure for apps & platforms. Automated AI systems, billing & access control.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- ROADMAP -->
-            <section id="roadmap" class="py-20 px-6 relative z-10">
-                <div class="max-w-4xl mx-auto">
-                    <h2 class="text-center font-display font-bold text-4xl mb-12 gsap-fade">Strategic <span class="text-gradient">Roadmap</span></h2>
-                    
-                    <div class="space-y-6">
-                        <div class="glass-card p-6 rounded-xl border-l-4 border-novus-cyan gsap-fade">
-                            <span class="text-xs font-mono text-novus-cyan mb-1 block">PHASE 1: GENESIS</span>
-                            <h3 class="text-xl font-bold mb-2">Foundation & Launch</h3>
-                            <p class="text-sm text-gray-400">Smart Contract deployment and verification. Establishing the initial liquidity pool and securing access controls via multi-sig protocols. Community kick-off.</p>
-                        </div>
-                        <div class="glass-card p-6 rounded-xl border-l-4 border-novus-purple gsap-fade">
-                            <span class="text-xs font-mono text-novus-purple mb-1 block">PHASE 2: ACCELERATION</span>
-                            <h3 class="text-xl font-bold mb-2">Growth & Exposure</h3>
-                            <p class="text-sm text-gray-400">Listing on CoinGecko and CoinMarketCap. Strategic marketing campaigns targeting high-volume DeFi traders. First CEX partnership announcements.</p>
-                        </div>
-                        <div class="glass-card p-6 rounded-xl border-l-4 border-white gsap-fade">
-                            <span class="text-xs font-mono text-white mb-1 block">PHASE 3: UTILITY</span>
-                            <h3 class="text-xl font-bold mb-2">Ecosystem Expansion</h3>
-                            <p class="text-sm text-gray-400">Launch of the Novus decentralized application (DApp). Implementation of staking mechanisms for holders. Transition to DAO governance.</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- WHY US -->
-            <section class="py-20 px-6 relative z-10 pointer-events-auto">
-                <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-                    <div class="gsap-fade">
-                        <h2 class="font-display font-bold text-4xl mb-4">Why <span class="text-gradient">NOVUS X?</span></h2>
-                        <p class="text-gray-400">In a market full of uncertainty, we provide clarity. We are not just another token; we are a standard for safety and sustainability.</p>
-                    </div>
-                    <div class="space-y-4 gsap-fade">
-                        <div class="flex items-start gap-3">
-                            <i data-lucide="check-circle-2" class="text-novus-cyan w-6 h-6 mt-1"></i>
-                            <div>
-                                <strong class="block text-white">Mathematical Scarcity</strong>
-                                <span class="text-sm text-gray-400">Unlike inflationary tokens, our burn logic guarantees a shrinking supply. Economics 101.</span>
-                            </div>
-                        </div>
-                        <div class="flex items-start gap-3">
-                            <i data-lucide="check-circle-2" class="text-novus-purple w-6 h-6 mt-1"></i>
-                            <div>
-                                <strong class="block text-white">Professional Foundation</strong>
-                                <span class="text-sm text-gray-400">Built by finance experts, not just coders. We understand market dynamics and investor psychology.</span>
-                            </div>
-                        </div>
-                        <div class="flex items-start gap-3">
-                            <i data-lucide="check-circle-2" class="text-white w-6 h-6 mt-1"></i>
-                            <div>
-                                <strong class="block text-white">Fair Entry</strong>
-                                <span class="text-sm text-gray-400">No hidden developer wallets holding 50% of supply. We started fair, and we grow fair.</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- INFINITY GALLERY -->
-            <section id="gallery" class="py-24 overflow-hidden relative pointer-events-auto bg-black/30 backdrop-blur-sm group">
-                <div class="max-w-7xl mx-auto px-6 mb-12 relative z-10 text-center">
-                    <h2 class="font-display font-bold text-4xl mb-2">Human Capital</h2>
-                    <p class="text-gray-400">The Global Network powering NOVUS X.</p>
-                </div>
-
-                <!-- Row 1: Left Stream -->
-                <div class="relative w-full overflow-hidden mb-6">
-                    <div class="flex gap-6 animate-scroll-left w-max">
-                        <!-- Set 1 -->
-                        <div class="w-72 h-48 glass-card p-1 rounded-2xl flex-shrink-0 relative overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=500" class="w-full h-full object-cover rounded-xl" alt="Team">
-                            <div class="absolute bottom-2 left-2 bg-black/60 px-2 rounded text-[10px] text-white backdrop-blur">STRATEGY</div>
-                        </div>
-                        <div class="w-72 h-48 glass-card p-1 rounded-2xl flex-shrink-0 relative overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1558494949-ef526b0042a0?auto=format&fit=crop&q=80&w=500" class="w-full h-full object-cover rounded-xl" alt="Server">
-                            <div class="absolute bottom-2 left-2 bg-black/60 px-2 rounded text-[10px] text-novus-cyan backdrop-blur">INFRASTRUCTURE</div>
-                        </div>
-                        <div class="w-72 h-48 glass-card p-1 rounded-2xl flex-shrink-0 relative overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&q=80&w=500" class="w-full h-full object-cover rounded-xl" alt="Meeting">
-                            <div class="absolute bottom-2 left-2 bg-black/60 px-2 rounded text-[10px] text-white backdrop-blur">PARTNERSHIP</div>
-                        </div>
-                        <div class="w-72 h-48 glass-card p-1 rounded-2xl flex-shrink-0 relative overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1573164713988-8665fc963095?auto=format&fit=crop&q=80&w=500" class="w-full h-full object-cover rounded-xl" alt="Tech">
-                            <div class="absolute bottom-2 left-2 bg-black/60 px-2 rounded text-[10px] text-novus-purple backdrop-blur">ENGINEERING</div>
-                        </div>
-                        <div class="w-72 h-48 glass-card p-1 rounded-2xl flex-shrink-0 relative overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=500" class="w-full h-full object-cover rounded-xl" alt="Globe">
-                            <div class="absolute bottom-2 left-2 bg-black/60 px-2 rounded text-[10px] text-white backdrop-blur">GLOBAL</div>
-                        </div>
-                        <div class="w-72 h-48 glass-card p-1 rounded-2xl flex-shrink-0 relative overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=500" class="w-full h-full object-cover rounded-xl" alt="Data">
-                            <div class="absolute bottom-2 left-2 bg-black/60 px-2 rounded text-[10px] text-novus-cyan backdrop-blur">ANALYTICS</div>
-                        </div>
-                        <!-- DUPLICATE FOR LOOP -->
-                        <div class="w-72 h-48 glass-card p-1 rounded-2xl flex-shrink-0 relative overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=500" class="w-full h-full object-cover rounded-xl" alt="Team">
-                            <div class="absolute bottom-2 left-2 bg-black/60 px-2 rounded text-[10px] text-white backdrop-blur">STRATEGY</div>
-                        </div>
-                        <div class="w-72 h-48 glass-card p-1 rounded-2xl flex-shrink-0 relative overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1558494949-ef526b0042a0?auto=format&fit=crop&q=80&w=500" class="w-full h-full object-cover rounded-xl" alt="Server">
-                            <div class="absolute bottom-2 left-2 bg-black/60 px-2 rounded text-[10px] text-novus-cyan backdrop-blur">INFRASTRUCTURE</div>
-                        </div>
-                        <div class="w-72 h-48 glass-card p-1 rounded-2xl flex-shrink-0 relative overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&q=80&w=500" class="w-full h-full object-cover rounded-xl" alt="Meeting">
-                            <div class="absolute bottom-2 left-2 bg-black/60 px-2 rounded text-[10px] text-white backdrop-blur">PARTNERSHIP</div>
-                        </div>
-                        <div class="w-72 h-48 glass-card p-1 rounded-2xl flex-shrink-0 relative overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1573164713988-8665fc963095?auto=format&fit=crop&q=80&w=500" class="w-full h-full object-cover rounded-xl" alt="Tech">
-                            <div class="absolute bottom-2 left-2 bg-black/60 px-2 rounded text-[10px] text-novus-purple backdrop-blur">ENGINEERING</div>
-                        </div>
-                        <div class="w-72 h-48 glass-card p-1 rounded-2xl flex-shrink-0 relative overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=500" class="w-full h-full object-cover rounded-xl" alt="Globe">
-                            <div class="absolute bottom-2 left-2 bg-black/60 px-2 rounded text-[10px] text-white backdrop-blur">GLOBAL</div>
-                        </div>
-                        <div class="w-72 h-48 glass-card p-1 rounded-2xl flex-shrink-0 relative overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=500" class="w-full h-full object-cover rounded-xl" alt="Data">
-                            <div class="absolute bottom-2 left-2 bg-black/60 px-2 rounded text-[10px] text-novus-cyan backdrop-blur">ANALYTICS</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Row 2: Right Stream -->
-                <div class="relative w-full overflow-hidden">
-                    <div class="flex gap-6 animate-scroll-right w-max">
-                        <!-- Set 2 -->
-                        <div class="w-72 h-48 glass-card p-1 rounded-2xl flex-shrink-0 relative overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?auto=format&fit=crop&q=80&w=500" class="w-full h-full object-cover rounded-xl" alt="City">
-                            <div class="absolute bottom-2 left-2 bg-black/60 px-2 rounded text-[10px] text-white backdrop-blur">HQ</div>
-                        </div>
-                        <div class="w-72 h-48 glass-card p-1 rounded-2xl flex-shrink-0 relative overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=500" class="w-full h-full object-cover rounded-xl" alt="Code">
-                            <div class="absolute bottom-2 left-2 bg-black/60 px-2 rounded text-[10px] text-novus-cyan backdrop-blur">DEVELOPMENT</div>
-                        </div>
-                        <div class="w-72 h-48 glass-card p-1 rounded-2xl flex-shrink-0 relative overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=500" class="w-full h-full object-cover rounded-xl" alt="Deal">
-                            <div class="absolute bottom-2 left-2 bg-black/60 px-2 rounded text-[10px] text-white backdrop-blur">TRUST</div>
-                        </div>
-                        <div class="w-72 h-48 glass-card p-1 rounded-2xl flex-shrink-0 relative overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1504384308090-c54be3852f33?auto=format&fit=crop&q=80&w=500" class="w-full h-full object-cover rounded-xl" alt="Network">
-                            <div class="absolute bottom-2 left-2 bg-black/60 px-2 rounded text-[10px] text-novus-purple backdrop-blur">SECURITY</div>
-                        </div>
-                        <div class="w-72 h-48 glass-card p-1 rounded-2xl flex-shrink-0 relative overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&q=80&w=500" class="w-full h-full object-cover rounded-xl" alt="Handshake">
-                            <div class="absolute bottom-2 left-2 bg-black/60 px-2 rounded text-[10px] text-white backdrop-blur">AGREEMENT</div>
-                        </div>
-                         <div class="w-72 h-48 glass-card p-1 rounded-2xl flex-shrink-0 relative overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&q=80&w=500" class="w-full h-full object-cover rounded-xl" alt="Work">
-                            <div class="absolute bottom-2 left-2 bg-black/60 px-2 rounded text-[10px] text-novus-cyan backdrop-blur">EXECUTION</div>
-                        </div>
-                        <!-- DUPLICATE FOR LOOP -->
-                        <div class="w-72 h-48 glass-card p-1 rounded-2xl flex-shrink-0 relative overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?auto=format&fit=crop&q=80&w=500" class="w-full h-full object-cover rounded-xl" alt="City">
-                            <div class="absolute bottom-2 left-2 bg-black/60 px-2 rounded text-[10px] text-white backdrop-blur">HQ</div>
-                        </div>
-                        <div class="w-72 h-48 glass-card p-1 rounded-2xl flex-shrink-0 relative overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=500" class="w-full h-full object-cover rounded-xl" alt="Code">
-                            <div class="absolute bottom-2 left-2 bg-black/60 px-2 rounded text-[10px] text-novus-cyan backdrop-blur">DEVELOPMENT</div>
-                        </div>
-                        <div class="w-72 h-48 glass-card p-1 rounded-2xl flex-shrink-0 relative overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=500" class="w-full h-full object-cover rounded-xl" alt="Deal">
-                            <div class="absolute bottom-2 left-2 bg-black/60 px-2 rounded text-[10px] text-white backdrop-blur">TRUST</div>
-                        </div>
-                        <div class="w-72 h-48 glass-card p-1 rounded-2xl flex-shrink-0 relative overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1504384308090-c54be3852f33?auto=format&fit=crop&q=80&w=500" class="w-full h-full object-cover rounded-xl" alt="Network">
-                            <div class="absolute bottom-2 left-2 bg-black/60 px-2 rounded text-[10px] text-novus-purple backdrop-blur">SECURITY</div>
-                        </div>
-                        <div class="w-72 h-48 glass-card p-1 rounded-2xl flex-shrink-0 relative overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&q=80&w=500" class="w-full h-full object-cover rounded-xl" alt="Handshake">
-                            <div class="absolute bottom-2 left-2 bg-black/60 px-2 rounded text-[10px] text-white backdrop-blur">AGREEMENT</div>
-                        </div>
-                         <div class="w-72 h-48 glass-card p-1 rounded-2xl flex-shrink-0 relative overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&q=80&w=500" class="w-full h-full object-cover rounded-xl" alt="Work">
-                            <div class="absolute bottom-2 left-2 bg-black/60 px-2 rounded text-[10px] text-novus-cyan backdrop-blur">EXECUTION</div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- TRANSPARENCY & TRUST -->
-            <section id="transparency" class="py-20 px-6 bg-black pointer-events-auto"> 
-                <div class="max-w-4xl mx-auto glass-panel rounded-3xl p-12 text-center relative overflow-hidden">
-                    <h2 class="font-display font-bold text-3xl mb-4 relative z-10">Radical <span class="text-gradient">Transparency</span></h2>
-                    <p class="text-gray-400 mb-8 max-w-lg mx-auto relative z-10">Trust is earned. Check the blockchain yourself – numbers don't lie.</p>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 relative z-10">
-                        <a href="https://etherscan.io/address/0x9cdb25BE428ED7C22Dcc1C10CA40726463AdcD63" target="_blank" class="flex flex-col items-center justify-center p-6 border border-white/10 rounded-xl hover:bg-white/5 hover:border-novus-cyan transition-all group">
-                            <i data-lucide="file-code-2" class="mb-2 text-white"></i>
-                            <span class="font-bold text-white">Verified Contract</span>
-                            <span class="text-xs text-green-400">Live on Etherscan</span>
-                        </a>
-
-                        <a href="https://app.uniswap.org" target="_blank" class="flex flex-col items-center justify-center p-6 border border-white/10 rounded-xl hover:bg-white/5 hover:border-novus-purple transition-all group">
-                            <i data-lucide="droplets" class="mb-2 text-white"></i>
-                            <span class="font-bold text-white">Liquidity Pool</span>
-                            <span class="text-xs text-novus-purple">Active on V3</span>
-                        </a>
-
-                        <div class="flex flex-col items-center justify-center p-6 border border-white/5 rounded-xl bg-white/5 opacity-60 cursor-not-allowed">
-                            <i data-lucide="lock" class="mb-2 text-gray-400"></i>
-                            <span class="font-bold text-gray-400">Liquidity Lock</span>
-                            <span class="text-xs text-gray-500">Processing...</span>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- COMMUNITY -->
-            <section class="py-20 px-6 relative z-10 pointer-events-auto">
-                <div class="max-w-3xl mx-auto text-center">
-                    <h2 class="font-display font-bold text-3xl mb-6">Join the <span class="text-gradient">Global Network</span></h2>
-                    <p class="text-gray-400 mb-8">Be part of the evolution. Connect with thousands of holders, get live updates, and shape the future of Novus X.</p>
-                    
-                    <div class="flex justify-center gap-6">
-                        <a href="#" class="flex items-center gap-2 px-6 py-3 rounded-full bg-[#229ED9]/20 text-[#229ED9] border border-[#229ED9]/50 hover:bg-[#229ED9] hover:text-white transition-all">
-                            <i data-lucide="send" class="w-5 h-5"></i> Telegram
-                        </a>
-                        <a href="#" class="flex items-center gap-2 px-6 py-3 rounded-full bg-white/10 text-white border border-white/20 hover:bg-white hover:text-black transition-all">
-                            <i data-lucide="twitter" class="w-5 h-5"></i> Twitter / X
-                        </a>
-                    </div>
-                </div>
-            </section>
-
-            <!-- FOOTER -->
-            <footer class="py-12 border-t border-white/5 bg-black text-center relative z-10 pointer-events-auto">
-                <div class="max-w-7xl mx-auto px-6 flex flex-col items-center">
-                    <div class="text-2xl font-display font-bold tracking-widest mb-2">NOVUS X</div>
-                    <p class="text-gray-500 text-sm mb-8">Next Generation DeFi Architecture.</p>
-                    
-                    <p class="text-gray-700 text-xs">
-                        &copy; 2024 NOVUS X Protocol. All rights reserved. <br>
-                        Cryptocurrency investments are subject to high market risk.
-                    </p>
-                </div>
-            </footer>
-
+            </div>
         </div>
-    </div>
+    </section>
+
+    <!-- INFRASTRUCTURE LOGOS -->
+    <section class="w-full bg-black/50 border-y border-white/5 backdrop-blur-sm py-8 overflow-hidden">
+        <p class="text-center text-xs text-gray-500 uppercase tracking-widest mb-6">Powered by infrastructure trusted by</p>
+        <div class="relative w-full flex overflow-x-hidden group">
+            <div class="animate-marquee whitespace-nowrap flex gap-16 items-center px-10">
+                <img src="https://cdn.simpleicons.org/ethereum/white" alt="Ethereum" class="logo-item">
+                <img src="https://cdn.simpleicons.org/uniswap/white" alt="Uniswap" class="logo-item">
+                <img src="https://cdn.simpleicons.org/google/white" alt="Google" class="logo-item">
+                <img src="https://cdn.simpleicons.org/cloudflare/white" alt="Cloudflare" class="logo-item">
+                <img src="https://cdn.simpleicons.org/visa/white" alt="Visa" class="logo-item">
+                <img src="https://cdn.simpleicons.org/porsche/white" alt="Porsche" class="logo-item">
+                <img src="https://cdn.simpleicons.org/proton/white" alt="Proton" class="logo-item">
+                <img src="https://cdn.simpleicons.org/chainlink/white" alt="Chainlink" class="logo-item">
+                <!-- Duplicate -->
+                <img src="https://cdn.simpleicons.org/ethereum/white" alt="Ethereum" class="logo-item">
+                <img src="https://cdn.simpleicons.org/uniswap/white" alt="Uniswap" class="logo-item">
+                <img src="https://cdn.simpleicons.org/google/white" alt="Google" class="logo-item">
+                <img src="https://cdn.simpleicons.org/cloudflare/white" alt="Cloudflare" class="logo-item">
+                <img src="https://cdn.simpleicons.org/visa/white" alt="Visa" class="logo-item">
+                <img src="https://cdn.simpleicons.org/porsche/white" alt="Porsche" class="logo-item">
+            </div>
+        </div>
+    </section>
+
+    <!-- ETHEREUM NETWORK CONNECTION -->
+    <section id="ethereum-network" class="py-24 px-6 relative z-10 flex flex-col items-center">
+        <div class="mb-12 text-center gsap-fade">
+                <h2 class="font-display font-bold text-4xl mb-2">Ethereum <span class="text-gradient">Native</span></h2>
+                <p class="text-gray-400">Directly connected to the world's most secure Layer-1 network.</p>
+        </div>
+
+        <!-- 3D Tilt Card -->
+        <div id="eth-container" class="perspective-1000 w-full max-w-5xl mx-auto">
+            <div id="eth-card" class="relative w-full aspect-[16/9] md:aspect-[21/9] rounded-3xl overflow-hidden glass-card transition-transform duration-100 ease-out preserve-3d shadow-2xl shadow-novus-purple/10">
+                
+                <!-- Background Image (Network) -->
+                <div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 hover:scale-110" style="background-image: url('https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&q=80&w=2000'); filter: grayscale(100%) contrast(120%);"></div>
+                
+                <!-- Overlay Gradients -->
+                <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
+                <div class="absolute inset-0 bg-novus-purple/10 mix-blend-overlay"></div>
+
+                <!-- Floating Elements (3D depth) -->
+                <div class="absolute inset-0 flex items-center justify-center translate-z-20">
+                        <!-- Ethereum SVG with Glow -->
+                        <div class="relative group">
+                        <div class="absolute inset-0 bg-novus-purple blur-[60px] opacity-20 group-hover:opacity-40 transition-opacity"></div>
+                        <svg class="relative w-32 h-32 md:w-48 md:h-48 text-gray-200 drop-shadow-2xl" viewBox="0 0 256 417" version="1.1" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid">
+                            <path fill="currentColor" d="M127.9611 0l-2.795 9.5v275.668l2.795 2.79 127.962-75.638z" />
+                            <path fill="#fff" d="M127.962 0L0 212.32l127.962 75.639V154.158z" />
+                            <path fill="currentColor" d="M127.9611 312.187l-1.575 1.92v98.199l1.575 4.601 128.038-180.32z" />
+                            <path fill="#fff" d="M127.962 416.905v-104.72L0 236.585z" />
+                            <path fill="#d1d5db" d="M127.9611 287.958l127.96-75.637-127.96-58.162z" />
+                            <path fill="#9ca3af" d="M0 212.32l127.96 75.638v-133.8z" />
+                            </svg>
+                        </div>
+                </div>
+                
+                <!-- Info HUD -->
+                <div class="absolute bottom-8 left-8 translate-z-10 text-left bg-black/40 backdrop-blur-md p-4 rounded-xl border border-white/10">
+                    <div class="flex items-center gap-2 mb-2">
+                        <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                        <span class="text-xs font-mono text-green-400 tracking-widest">LIVE MAINNET</span>
+                    </div>
+                    <div class="text-2xl font-bold font-display text-white mb-1">ERC-20 Standard</div>
+                    <div class="text-xs text-gray-400 font-mono">
+                        Block Height: <span id="block-height" class="text-novus-purple">19,420,xxx</span> <br>
+                        Gas: <span class="text-white">12 Gwei</span>
+                    </div>
+                </div>
+
+                    <!-- Grid Overlay -->
+                    <div class="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay pointer-events-none"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TOKENOMICS -->
+    <section id="tokenomics" class="py-32 px-6 relative z-10">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-16 border-b border-white/10 pb-8 gsap-fade">
+                <div>
+                    <h2 class="font-display font-bold text-5xl mb-2">Tokenomics</h2>
+                    <p class="text-novus-cyan">Secured by Math.</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="glass-card p-8 rounded-2xl relative overflow-hidden group gsap-fade">
+                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-30 transition-opacity"><i data-lucide="flame" class="w-24 h-24 text-novus-purple"></i></div>
+                    <h3 class="text-gray-400 font-mono text-sm mb-2">DEFLATIONARY</h3>
+                    <p class="text-gray-300 text-sm leading-relaxed">NOVUS X features a built-in burn mechanism. Every transaction contributes to reducing the supply, increasing scarcity and value over time.</p>
+                </div>
+
+                <div class="glass-card p-8 rounded-2xl relative overflow-hidden group gsap-fade">
+                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-30 transition-opacity"><i data-lucide="shield-check" class="w-24 h-24 text-novus-cyan"></i></div>
+                    <h3 class="text-gray-400 font-mono text-sm mb-2">UNRUGGABLE</h3>
+                    <p class="text-gray-300 text-sm leading-relaxed">Liquidity is locked and ownership is managed via a secure AccessControl standard. The contract is fully verified on Etherscan.</p>
+                </div>
+
+                <div class="glass-card p-8 rounded-2xl relative overflow-hidden group gsap-fade">
+                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-30 transition-opacity"><i data-lucide="gem" class="w-24 h-24 text-white"></i></div>
+                    <h3 class="text-gray-400 font-mono text-sm mb-2">COMMUNITY FIRST</h3>
+                    <p class="text-gray-300 text-sm leading-relaxed">No private presales for VCs. A fair launch for everyone. The liquidity pool was funded 100% by the team to ensure a safe start.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- EVOLUTION SECTION -->
+    <section id="evolution" class="py-20 px-6 relative z-10">
+        <div class="max-w-5xl mx-auto glass-panel rounded-3xl p-8 md:p-12">
+            <div class="text-center mb-12 gsap-fade">
+                <h2 class="font-display font-bold text-3xl md:text-4xl">The Next <span class="text-gradient">Evolution</span></h2>
+                <p class="text-gray-400 mt-2">A Web3 approach to distributing computing power globally.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="flex gap-4 gsap-fade">
+                    <div class="bg-novus-cyan/10 p-3 rounded-lg h-fit text-novus-cyan"><i data-lucide="cpu"></i></div>
+                    <div>
+                        <h4 class="font-bold text-lg mb-1">1. Modernization</h4>
+                        <p class="text-sm text-gray-400">Decentralized server structures replacing vulnerable centralized systems. Stable and future-proof.</p>
+                    </div>
+                </div>
+                <div class="flex gap-4 gsap-fade">
+                    <div class="bg-novus-purple/10 p-3 rounded-lg h-fit text-novus-purple"><i data-lucide="zap"></i></div>
+                    <div>
+                        <h4 class="font-bold text-lg mb-1">2. Performance</h4>
+                        <p class="text-sm text-gray-400">Works like a decentralized CDN. Reduced load times, balanced loads, and improved Core Web Vitals.</p>
+                    </div>
+                </div>
+                <div class="flex gap-4 gsap-fade">
+                    <div class="bg-white/10 p-3 rounded-lg h-fit text-white"><i data-lucide="lock"></i></div>
+                    <div>
+                        <h4 class="font-bold text-lg mb-1">3. Security</h4>
+                        <p class="text-sm text-gray-400">Economic barriers make malicious traffic unprofitable. DDoS defense via decentralized load balancing.</p>
+                    </div>
+                </div>
+                <div class="flex gap-4 gsap-fade">
+                    <div class="bg-novus-cyan/10 p-3 rounded-lg h-fit text-novus-cyan"><i data-lucide="briefcase"></i></div>
+                    <div>
+                        <h4 class="font-bold text-lg mb-1">4. Business Tools</h4>
+                        <p class="text-sm text-gray-400">Scalable infrastructure for apps & platforms. Automated AI systems, billing & access control.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ROADMAP -->
+    <section id="roadmap" class="py-20 px-6 relative z-10">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-center font-display font-bold text-4xl mb-12 gsap-fade">Strategic <span class="text-gradient">Roadmap</span></h2>
+            
+            <div class="space-y-6">
+                <div class="glass-card p-6 rounded-xl border-l-4 border-novus-cyan gsap-fade">
+                    <span class="text-xs font-mono text-novus-cyan mb-1 block">PHASE 1: GENESIS</span>
+                    <h3 class="text-xl font-bold mb-2">Foundation & Launch</h3>
+                    <p class="text-sm text-gray-400">Smart Contract deployment and verification. Establishing the initial liquidity pool and securing access controls via multi-sig protocols. Community kick-off.</p>
+                </div>
+                <div class="glass-card p-6 rounded-xl border-l-4 border-novus-purple gsap-fade">
+                    <span class="text-xs font-mono text-novus-purple mb-1 block">PHASE 2: ACCELERATION</span>
+                    <h3 class="text-xl font-bold mb-2">Growth & Exposure</h3>
+                    <p class="text-sm text-gray-400">Listing on CoinGecko and CoinMarketCap. Strategic marketing campaigns targeting high-volume DeFi traders. First CEX partnership announcements.</p>
+                </div>
+                <div class="glass-card p-6 rounded-xl border-l-4 border-white gsap-fade">
+                    <span class="text-xs font-mono text-white mb-1 block">PHASE 3: UTILITY</span>
+                    <h3 class="text-xl font-bold mb-2">Ecosystem Expansion</h3>
+                    <p class="text-sm text-gray-400">Launch of the Novus decentralized application (DApp). Implementation of staking mechanisms for holders. Transition to DAO governance.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- WHY US -->
+    <section class="py-20 px-6 relative z-10">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            <div class="gsap-fade">
+                <h2 class="font-display font-bold text-4xl mb-4">Why <span class="text-gradient">NOVUS X?</span></h2>
+                <p class="text-gray-400">In a market full of uncertainty, we provide clarity. We are not just another token; we are a standard for safety and sustainability.</p>
+            </div>
+            <div class="space-y-4 gsap-fade">
+                <div class="flex items-start gap-3">
+                    <i data-lucide="check-circle-2" class="text-novus-cyan w-6 h-6 mt-1"></i>
+                    <div>
+                        <strong class="block text-white">Mathematical Scarcity</strong>
+                        <span class="text-sm text-gray-400">Unlike inflationary tokens, our burn logic guarantees a shrinking supply. Economics 101.</span>
+                    </div>
+                </div>
+                <div class="flex items-start gap-3">
+                    <i data-lucide="check-circle-2" class="text-novus-purple w-6 h-6 mt-1"></i>
+                    <div>
+                        <strong class="block text-white">Professional Foundation</strong>
+                        <span class="text-sm text-gray-400">Built by finance experts, not just coders. We understand market dynamics and investor psychology.</span>
+                    </div>
+                </div>
+                <div class="flex items-start gap-3">
+                    <i data-lucide="check-circle-2" class="text-white w-6 h-6 mt-1"></i>
+                    <div>
+                        <strong class="block text-white">Fair Entry</strong>
+                        <span class="text-sm text-gray-400">No hidden developer wallets holding 50% of supply. We started fair, and we grow fair.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- INFINITY GALLERY -->
+    <section id="gallery" class="py-24 overflow-hidden relative bg-black/30 backdrop-blur-sm group">
+        <div class="max-w-7xl mx-auto px-6 mb-12 relative z-10 text-center">
+            <h2 class="font-display font-bold text-4xl mb-2">Human Capital</h2>
+            <p class="text-gray-400">The Global Network powering NOVUS X.</p>
+        </div>
+
+        <!-- Row 1: Left Stream -->
+        <div class="relative w-full overflow-hidden mb-6">
+            <div class="flex gap-6 animate-scroll-left w-max">
+                <!-- Set 1 -->
+                <div class="w-72 h-48 glass-card p-1 rounded-2xl flex-shrink-0 relative overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=500" class="w-full h-full object-cover rounded-xl" alt="Team">
+                    <div class="absolute bottom-2 left-2 bg-black/60 px-2 rounded text-[10px] text-white backdrop-blur">STRATEGY</div>
+                </div>
+                <div class="w-72 h-48 glass-card p-1 rounded-2xl flex-shrink-0 relative overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1558494949-ef526b0042a0?auto=format&fit=crop&q=80&w=500" class="w-full h-full object-cover rounded-xl" alt="Server">
+                    <div class="absolute bottom-2 left-2 bg-black/60 px-2 rounded text-[10px] text-novus-cyan backdrop-blur">INFRASTRUCTURE</div>
+                </div>
+                <div class="w-72 h-48 glass-card p-1 rounded-2xl flex-shrink-0 relative overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&q=80&w=500" class="w-full h-full object-cover rounded-xl" alt="Meeting">
+                    <div class="absolute bottom-2 left-2 bg-black/60 px-2 rounded text-[10px] text-white backdrop-blur">PARTNERSHIP</div>
+                </div>
+                <div class="w-72 h-48 glass-card p-1 rounded-2xl flex-shrink-0 relative overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1573164713988-8665fc963095?auto=format&fit=crop&q=80&w=500" class="w-full h-full object-cover rounded-xl" alt="Tech">
+                    <div class="absolute bottom-2 left-2 bg-black/60 px-2 rounded text-[10px] text-novus-purple backdrop-blur">ENGINEERING</div>
+                </div>
+                <div class="w-72 h-48 glass-card p-1 rounded-2xl flex-shrink-0 relative overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=500" class="w-full h-full object-cover rounded-xl" alt="Globe">
+                    <div class="absolute bottom-2 left-2 bg-black/60 px-2 rounded text-[10px] text-white backdrop-blur">GLOBAL</div>
+                </div>
+                <div class="w-72 h-48 glass-card p-1 rounded-2xl flex-shrink-0 relative overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=500" class="w-full h-full object-cover rounded-xl" alt="Data">
+                    <div class="absolute bottom-2 left-2 bg-black/60 px-2 rounded text-[10px] text-novus-cyan backdrop-blur">ANALYTICS</div>
+                </div>
+                <!-- DUPLICATE FOR LOOP -->
+                <div class="w-72 h-48 glass-card p-1 rounded-2xl flex-shrink-0 relative overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=500" class="w-full h-full object-cover rounded-xl" alt="Team">
+                    <div class="absolute bottom-2 left-2 bg-black/60 px-2 rounded text-[10px] text-white backdrop-blur">STRATEGY</div>
+                </div>
+                <div class="w-72 h-48 glass-card p-1 rounded-2xl flex-shrink-0 relative overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1558494949-ef526b0042a0?auto=format&fit=crop&q=80&w=500" class="w-full h-full object-cover rounded-xl" alt="Server">
+                    <div class="absolute bottom-2 left-2 bg-black/60 px-2 rounded text-[10px] text-novus-cyan backdrop-blur">INFRASTRUCTURE</div>
+                </div>
+                <div class="w-72 h-48 glass-card p-1 rounded-2xl flex-shrink-0 relative overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&q=80&w=500" class="w-full h-full object-cover rounded-xl" alt="Meeting">
+                    <div class="absolute bottom-2 left-2 bg-black/60 px-2 rounded text-[10px] text-white backdrop-blur">PARTNERSHIP</div>
+                </div>
+                <div class="w-72 h-48 glass-card p-1 rounded-2xl flex-shrink-0 relative overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1573164713988-8665fc963095?auto=format&fit=crop&q=80&w=500" class="w-full h-full object-cover rounded-xl" alt="Tech">
+                    <div class="absolute bottom-2 left-2 bg-black/60 px-2 rounded text-[10px] text-novus-purple backdrop-blur">ENGINEERING</div>
+                </div>
+                <div class="w-72 h-48 glass-card p-1 rounded-2xl flex-shrink-0 relative overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=500" class="w-full h-full object-cover rounded-xl" alt="Globe">
+                    <div class="absolute bottom-2 left-2 bg-black/60 px-2 rounded text-[10px] text-white backdrop-blur">GLOBAL</div>
+                </div>
+                <div class="w-72 h-48 glass-card p-1 rounded-2xl flex-shrink-0 relative overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=500" class="w-full h-full object-cover rounded-xl" alt="Data">
+                    <div class="absolute bottom-2 left-2 bg-black/60 px-2 rounded text-[10px] text-novus-cyan backdrop-blur">ANALYTICS</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Row 2: Right Stream -->
+        <div class="relative w-full overflow-hidden">
+            <div class="flex gap-6 animate-scroll-right w-max">
+                <!-- Set 2 -->
+                <div class="w-72 h-48 glass-card p-1 rounded-2xl flex-shrink-0 relative overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?auto=format&fit=crop&q=80&w=500" class="w-full h-full object-cover rounded-xl" alt="City">
+                    <div class="absolute bottom-2 left-2 bg-black/60 px-2 rounded text-[10px] text-white backdrop-blur">HQ</div>
+                </div>
+                <div class="w-72 h-48 glass-card p-1 rounded-2xl flex-shrink-0 relative overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=500" class="w-full h-full object-cover rounded-xl" alt="Code">
+                    <div class="absolute bottom-2 left-2 bg-black/60 px-2 rounded text-[10px] text-novus-cyan backdrop-blur">DEVELOPMENT</div>
+                </div>
+                <div class="w-72 h-48 glass-card p-1 rounded-2xl flex-shrink-0 relative overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=500" class="w-full h-full object-cover rounded-xl" alt="Deal">
+                    <div class="absolute bottom-2 left-2 bg-black/60 px-2 rounded text-[10px] text-white backdrop-blur">TRUST</div>
+                </div>
+                <div class="w-72 h-48 glass-card p-1 rounded-2xl flex-shrink-0 relative overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1504384308090-c54be3852f33?auto=format&fit=crop&q=80&w=500" class="w-full h-full object-cover rounded-xl" alt="Network">
+                    <div class="absolute bottom-2 left-2 bg-black/60 px-2 rounded text-[10px] text-novus-purple backdrop-blur">SECURITY</div>
+                </div>
+                <div class="w-72 h-48 glass-card p-1 rounded-2xl flex-shrink-0 relative overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&q=80&w=500" class="w-full h-full object-cover rounded-xl" alt="Handshake">
+                    <div class="absolute bottom-2 left-2 bg-black/60 px-2 rounded text-[10px] text-white backdrop-blur">AGREEMENT</div>
+                </div>
+                    <div class="w-72 h-48 glass-card p-1 rounded-2xl flex-shrink-0 relative overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&q=80&w=500" class="w-full h-full object-cover rounded-xl" alt="Work">
+                    <div class="absolute bottom-2 left-2 bg-black/60 px-2 rounded text-[10px] text-novus-cyan backdrop-blur">EXECUTION</div>
+                </div>
+                <!-- DUPLICATE FOR LOOP -->
+                <div class="w-72 h-48 glass-card p-1 rounded-2xl flex-shrink-0 relative overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?auto=format&fit=crop&q=80&w=500" class="w-full h-full object-cover rounded-xl" alt="City">
+                    <div class="absolute bottom-2 left-2 bg-black/60 px-2 rounded text-[10px] text-white backdrop-blur">HQ</div>
+                </div>
+                <div class="w-72 h-48 glass-card p-1 rounded-2xl flex-shrink-0 relative overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=500" class="w-full h-full object-cover rounded-xl" alt="Code">
+                    <div class="absolute bottom-2 left-2 bg-black/60 px-2 rounded text-[10px] text-novus-cyan backdrop-blur">DEVELOPMENT</div>
+                </div>
+                <div class="w-72 h-48 glass-card p-1 rounded-2xl flex-shrink-0 relative overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=500" class="w-full h-full object-cover rounded-xl" alt="Deal">
+                    <div class="absolute bottom-2 left-2 bg-black/60 px-2 rounded text-[10px] text-white backdrop-blur">TRUST</div>
+                </div>
+                <div class="w-72 h-48 glass-card p-1 rounded-2xl flex-shrink-0 relative overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1504384308090-c54be3852f33?auto=format&fit=crop&q=80&w=500" class="w-full h-full object-cover rounded-xl" alt="Network">
+                    <div class="absolute bottom-2 left-2 bg-black/60 px-2 rounded text-[10px] text-novus-purple backdrop-blur">SECURITY</div>
+                </div>
+                <div class="w-72 h-48 glass-card p-1 rounded-2xl flex-shrink-0 relative overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&q=80&w=500" class="w-full h-full object-cover rounded-xl" alt="Handshake">
+                    <div class="absolute bottom-2 left-2 bg-black/60 px-2 rounded text-[10px] text-white backdrop-blur">AGREEMENT</div>
+                </div>
+                    <div class="w-72 h-48 glass-card p-1 rounded-2xl flex-shrink-0 relative overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&q=80&w=500" class="w-full h-full object-cover rounded-xl" alt="Work">
+                    <div class="absolute bottom-2 left-2 bg-black/60 px-2 rounded text-[10px] text-novus-cyan backdrop-blur">EXECUTION</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TRANSPARENCY & TRUST -->
+    <section id="transparency" class="py-20 px-6 bg-black"> 
+        <div class="max-w-4xl mx-auto glass-panel rounded-3xl p-12 text-center relative overflow-hidden">
+            <h2 class="font-display font-bold text-3xl mb-4 relative z-10">Radical <span class="text-gradient">Transparency</span></h2>
+            <p class="text-gray-400 mb-8 max-w-lg mx-auto relative z-10">Trust is earned. Check the blockchain yourself – numbers don't lie.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 relative z-10">
+                <a href="https://etherscan.io/address/0x9cdb25BE428ED7C22Dcc1C10CA40726463AdcD63" target="_blank" class="flex flex-col items-center justify-center p-6 border border-white/10 rounded-xl hover:bg-white/5 hover:border-novus-cyan transition-all group">
+                    <i data-lucide="file-code-2" class="mb-2 text-white"></i>
+                    <span class="font-bold text-white">Verified Contract</span>
+                    <span class="text-xs text-green-400">Live on Etherscan</span>
+                </a>
+
+                <a href="https://app.uniswap.org" target="_blank" class="flex flex-col items-center justify-center p-6 border border-white/10 rounded-xl hover:bg-white/5 hover:border-novus-purple transition-all group">
+                    <i data-lucide="droplets" class="mb-2 text-white"></i>
+                    <span class="font-bold text-white">Liquidity Pool</span>
+                    <span class="text-xs text-novus-purple">Active on V3</span>
+                </a>
+
+                <div class="flex flex-col items-center justify-center p-6 border border-white/5 rounded-xl bg-white/5 opacity-60 cursor-not-allowed">
+                    <i data-lucide="lock" class="mb-2 text-gray-400"></i>
+                    <span class="font-bold text-gray-400">Liquidity Lock</span>
+                    <span class="text-xs text-gray-500">Processing...</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- COMMUNITY -->
+    <section class="py-20 px-6 relative z-10">
+        <div class="max-w-3xl mx-auto text-center">
+            <h2 class="font-display font-bold text-3xl mb-6">Join the <span class="text-gradient">Global Network</span></h2>
+            <p class="text-gray-400 mb-8">Be part of the evolution. Connect with thousands of holders, get live updates, and shape the future of Novus X.</p>
+            
+            <div class="flex justify-center gap-6">
+                <a href="#" class="flex items-center gap-2 px-6 py-3 rounded-full bg-[#229ED9]/20 text-[#229ED9] border border-[#229ED9]/50 hover:bg-[#229ED9] hover:text-white transition-all">
+                    <i data-lucide="send" class="w-5 h-5"></i> Telegram
+                </a>
+                <a href="#" class="flex items-center gap-2 px-6 py-3 rounded-full bg-white/10 text-white border border-white/20 hover:bg-white hover:text-black transition-all">
+                    <i data-lucide="twitter" class="w-5 h-5"></i> Twitter / X
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="py-12 border-t border-white/5 bg-black text-center relative z-10">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col items-center">
+            <div class="text-2xl font-display font-bold tracking-widest mb-2">NOVUS X</div>
+            <p class="text-gray-500 text-sm mb-8">Next Generation DeFi Architecture.</p>
+            
+            <p class="text-gray-700 text-xs">
+                &copy; 2024 NOVUS X Protocol. All rights reserved. <br>
+                Cryptocurrency investments are subject to high market risk.
+            </p>
+        </div>
+    </footer>
 
     <!-- SCRIPTS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
 
     <script>
         lucide.createIcons();
 
-        // 1. Initialize Lenis (Smooth Scroll)
-        const lenis = new Lenis({
-            duration: 1.2,
-            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-            direction: 'vertical',
-            gestureDirection: 'vertical',
-            smooth: true,
-            mouseMultiplier: 1,
-            smoothTouch: false,
-            touchMultiplier: 2,
-        });
-
-        function raf(time) {
-            lenis.raf(time);
-            requestAnimationFrame(raf);
-        }
-        requestAnimationFrame(raf);
-
-        // 2. GSAP Animations
+        // 1. GSAP Animations
         gsap.registerPlugin(ScrollTrigger);
 
         gsap.to(".gsap-hero", {
@@ -678,7 +658,7 @@
             );
         });
 
-        // 3. Contract Copy Function
+        // 2. Contract Copy Function
         function copyContract() {
             const address = "0x9cdb25BE428ED7C22Dcc1C10CA40726463AdcD63";
             const btnText = document.getElementById("btn-text");
@@ -699,7 +679,7 @@
             });
         }
 
-        // 4. Ethereum 3D Tilt Effect
+        // 3. Ethereum 3D Tilt Effect
         const ethContainer = document.getElementById('eth-container');
         const ethCard = document.getElementById('eth-card');
         
@@ -712,7 +692,6 @@
                 const centerX = rect.width / 2;
                 const centerY = rect.height / 2;
                 
-                // Rotation intensity (adjust multiplier for sensitivity)
                 const rotateX = ((y - centerY) / centerY) * -12; 
                 const rotateY = ((x - centerX) / centerX) * 12;
                 
@@ -730,9 +709,9 @@
         setInterval(() => {
             blockHeight += Math.floor(Math.random() * 5);
             blockHeightEl.innerText = blockHeight.toLocaleString();
-        }, 12000); // Ethereum block time approx 12s
+        }, 12000); 
 
-        // 5. STYLE SWITCHER LOGIC
+        // 4. STYLE SWITCHER LOGIC
         let currentStyle = 1;
         function toggleStyle() {
             const iframe = document.getElementById('spline-frame');
@@ -741,21 +720,23 @@
             // Step 1: Fade out
             container.style.opacity = '0';
 
-            // Step 2: Swap URL after fade out matches transition time (800ms defined in CSS)
-            // We use a slightly shorter timeout (500ms) to start loading sooner while still invisible
+            // Step 2: Swap URL after fade out matches transition time
             setTimeout(() => {
                 if (currentStyle === 1) {
-                    // Switch to Reactive Orb
-                    iframe.src = 'https://my.spline.design/reactiveorb-4ytbTLY5j6fTA04qX4qISj53/';
-                    currentStyle = 2;
-                } else {
-                    // Switch back to Boxes
+                    // Switch to Boxes (Style 2)
                     iframe.src = 'https://my.spline.design/boxeshover-vRKy1mPv1f8VWmGFobsMyepi/';
+                    currentStyle = 2;
+                } else if (currentStyle === 2) {
+                    // Switch to Reactive Orb (Style 3)
+                    iframe.src = 'https://my.spline.design/reactiveorb-4ytbTLY5j6fTA04qX4qISj53/';
+                    currentStyle = 3;
+                } else {
+                    // Back to Start (TickTock) (Style 1)
+                    iframe.src = 'https://my.spline.design/ticktockinteractivelanding-SylE4FS9VIaBPANrCNHa9QQR/';
                     currentStyle = 1;
                 }
                 
                 // Step 3: Fade back in
-                // Give the iframe a moment to initialize the load request
                 setTimeout(() => {
                     container.style.opacity = '1';
                 }, 500); 
