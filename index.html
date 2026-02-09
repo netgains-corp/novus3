@@ -35,10 +35,11 @@
                     },
                     animation: {
                         'glow': 'glow 3s ease-in-out infinite alternate',
-                        'marquee': 'marquee 60s linear infinite', /* Slower speed */
+                        'marquee': 'marquee 60s linear infinite',
                         'scroll-left': 'scrollLeft 40s linear infinite',
                         'scroll-right': 'scrollRight 40s linear infinite',
                         'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'spin-slow': 'spin 4s linear infinite',
                     },
                     keyframes: {
                         glow: {
@@ -47,7 +48,7 @@
                         },
                         marquee: {
                             '0%': { transform: 'translateX(0%)' },
-                            '100%': { transform: 'translateX(-50%)' }, /* Perfect loop point for duplicated content */
+                            '100%': { transform: 'translateX(-50%)' },
                         },
                         scrollLeft: {
                             '0%': { transform: 'translateX(0)' },
@@ -130,7 +131,7 @@
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100vh;
             z-index: -1; 
-            background-color: #050505; /* Fallback background color */
+            background-color: #050505; 
             transition: opacity 0.8s ease-in-out;
         }
         iframe { border: none; width: 100%; height: 100%; }
@@ -169,7 +170,6 @@
             
             <div class="flex items-center gap-2">
                 <div class="w-8 h-8 rounded bg-gradient-to-br from-novus-cyan to-novus-purple flex items-center justify-center font-bold text-black font-display text-xl">X</div>
-                <!-- Updated Title with Gradient and Glow -->
                 <span class="font-display font-bold text-xl tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-novus-cyan to-novus-purple drop-shadow-[0_0_8px_rgba(0,240,255,0.6)]">NOVUS X</span>
             </div>
             
@@ -197,7 +197,6 @@
     </nav>
 
     <!-- HERO SECTION -->
-    <!-- Reduced Padding: pt-20 / pt-24 -->
     <section class="flex flex-col items-center text-center px-4 relative pt-20 pb-20 md:pt-24" id="about">
         <div class="gsap-hero opacity-0 translate-y-10">
             <span class="inline-block py-1 px-3 rounded-full bg-novus-cyan/10 border border-novus-cyan/30 text-novus-cyan text-xs font-mono tracking-widest mb-6">
@@ -205,20 +204,21 @@
             </span>
             <h1 class="font-display font-bold text-6xl md:text-8xl lg:text-9xl tracking-tighter mb-4 leading-tight">
                 ENGINEERED <br>
-                <span class="text-gradient">FOR GROWTH</span>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-novus-cyan to-novus-purple drop-shadow-[0_0_20px_rgba(0,240,255,0.7)] animate-pulse">FOR GROWTH</span>
             </h1>
             <p class="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto mb-10 font-light">
                 NOVUS X is built for the community. Safe, burnable, and ready to scale on the Ethereum Network.
             </p>
             
             <div class="flex flex-col md:flex-row gap-4 justify-center items-center">
-                <a href="https://app.uniswap.org" target="_blank" class="group relative px-8 py-4 bg-novus-cyan text-black font-bold rounded-lg overflow-hidden transition-all hover:shadow-[0_0_20px_rgba(0,240,255,0.4)]">
-                    <span class="relative z-10 flex items-center gap-2">
+                <a href="https://app.uniswap.org" target="_blank" class="relative inline-flex h-16 overflow-hidden rounded-lg p-[2px] focus:outline-none group">
+                    <span class="absolute inset-[-1000%] animate-[spin_3s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#00F0FF_0%,#BD00FF_50%,#00F0FF_100%)]"></span>
+                    <span class="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-lg bg-black text-novus-cyan font-bold backdrop-blur-3xl px-8 py-4 transition-all group-hover:bg-gray-900 group-hover:text-white group-hover:shadow-[0_0_30px_rgba(0,240,255,0.5)]">
                         Buy on Uniswap
                     </span>
                 </a>
                 
-                <a href="https://dexscreener.com" target="_blank" class="px-8 py-4 bg-white/5 border border-white/10 rounded-lg hover:bg-white/10 transition-all font-medium text-gray-300 flex items-center gap-2">
+                <a href="https://dexscreener.com" target="_blank" class="px-8 py-4 bg-white/5 border border-white/10 rounded-lg hover:bg-white/10 transition-all font-medium text-gray-300 flex items-center gap-2 h-16">
                     Live Chart <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
                 </a>
             </div>
@@ -232,13 +232,12 @@
         </div>
     </section>
 
-    <!-- INFRASTRUCTURE LOGOS (Gradient, Large & Infinity) -->
+    <!-- INFRASTRUCTURE LOGOS (Original Set Restored) -->
     <section class="w-full bg-black/50 border-y border-white/5 backdrop-blur-sm py-8 overflow-hidden">
         <p class="text-center text-xs text-gray-500 uppercase tracking-widest mb-6">Powered by scalable infrastructure</p>
-        <!-- Changed w-full to w-[200%] to ensure there is enough content for seamless loop before reset -->
         <div class="relative w-full flex overflow-x-hidden group">
-            <div class="animate-marquee whitespace-nowrap flex gap-16 items-center px-10">
-                <!-- Original Set (Doubled sizes for visibility) -->
+            <div class="animate-marquee whitespace-nowrap flex gap-16 items-center px-10 w-max">
+                <!-- Original List (Visa, Porsche, Google etc.) - Set 1 -->
                 <div class="logo-gradient w-16 h-16" style="-webkit-mask-image: url('https://cdn.simpleicons.org/ethereum'); mask-image: url('https://cdn.simpleicons.org/ethereum');"></div>
                 <div class="logo-gradient w-20 h-16" style="-webkit-mask-image: url('https://cdn.simpleicons.org/uniswap'); mask-image: url('https://cdn.simpleicons.org/uniswap');"></div>
                 <div class="logo-gradient w-16 h-16" style="-webkit-mask-image: url('https://cdn.simpleicons.org/google'); mask-image: url('https://cdn.simpleicons.org/google');"></div>
@@ -254,7 +253,39 @@
                 <div class="logo-gradient w-16 h-16" style="-webkit-mask-image: url('https://cdn.simpleicons.org/maker'); mask-image: url('https://cdn.simpleicons.org/maker');"></div>
                 <div class="logo-gradient w-24 h-16" style="-webkit-mask-image: url('https://cdn.simpleicons.org/aws'); mask-image: url('https://cdn.simpleicons.org/aws');"></div>
                 
-                <!-- Duplicate Set (For Infinity Loop) -->
+                <!-- Duplicate Set -->
+                <div class="logo-gradient w-16 h-16" style="-webkit-mask-image: url('https://cdn.simpleicons.org/ethereum'); mask-image: url('https://cdn.simpleicons.org/ethereum');"></div>
+                <div class="logo-gradient w-20 h-16" style="-webkit-mask-image: url('https://cdn.simpleicons.org/uniswap'); mask-image: url('https://cdn.simpleicons.org/uniswap');"></div>
+                <div class="logo-gradient w-16 h-16" style="-webkit-mask-image: url('https://cdn.simpleicons.org/google'); mask-image: url('https://cdn.simpleicons.org/google');"></div>
+                <div class="logo-gradient w-24 h-16" style="-webkit-mask-image: url('https://cdn.simpleicons.org/cloudflare'); mask-image: url('https://cdn.simpleicons.org/cloudflare');"></div>
+                <div class="logo-gradient w-20 h-16" style="-webkit-mask-image: url('https://cdn.simpleicons.org/visa'); mask-image: url('https://cdn.simpleicons.org/visa');"></div>
+                <div class="logo-gradient w-20 h-16" style="-webkit-mask-image: url('https://cdn.simpleicons.org/porsche'); mask-image: url('https://cdn.simpleicons.org/porsche');"></div>
+                <div class="logo-gradient w-16 h-16" style="-webkit-mask-image: url('https://cdn.simpleicons.org/proton'); mask-image: url('https://cdn.simpleicons.org/proton');"></div>
+                <div class="logo-gradient w-16 h-16" style="-webkit-mask-image: url('https://cdn.simpleicons.org/chainlink'); mask-image: url('https://cdn.simpleicons.org/chainlink');"></div>
+                <div class="logo-gradient w-16 h-16" style="-webkit-mask-image: url('https://cdn.simpleicons.org/polygon'); mask-image: url('https://cdn.simpleicons.org/polygon');"></div>
+                <div class="logo-gradient w-16 h-16" style="-webkit-mask-image: url('https://cdn.simpleicons.org/binance'); mask-image: url('https://cdn.simpleicons.org/binance');"></div>
+                <div class="logo-gradient w-16 h-16" style="-webkit-mask-image: url('https://cdn.simpleicons.org/coinbase'); mask-image: url('https://cdn.simpleicons.org/coinbase');"></div>
+                <div class="logo-gradient w-16 h-16" style="-webkit-mask-image: url('https://cdn.simpleicons.org/aave'); mask-image: url('https://cdn.simpleicons.org/aave');"></div>
+                <div class="logo-gradient w-16 h-16" style="-webkit-mask-image: url('https://cdn.simpleicons.org/maker'); mask-image: url('https://cdn.simpleicons.org/maker');"></div>
+                <div class="logo-gradient w-24 h-16" style="-webkit-mask-image: url('https://cdn.simpleicons.org/aws'); mask-image: url('https://cdn.simpleicons.org/aws');"></div>
+
+                <!-- Triplicate Set -->
+                <div class="logo-gradient w-16 h-16" style="-webkit-mask-image: url('https://cdn.simpleicons.org/ethereum'); mask-image: url('https://cdn.simpleicons.org/ethereum');"></div>
+                <div class="logo-gradient w-20 h-16" style="-webkit-mask-image: url('https://cdn.simpleicons.org/uniswap'); mask-image: url('https://cdn.simpleicons.org/uniswap');"></div>
+                <div class="logo-gradient w-16 h-16" style="-webkit-mask-image: url('https://cdn.simpleicons.org/google'); mask-image: url('https://cdn.simpleicons.org/google');"></div>
+                <div class="logo-gradient w-24 h-16" style="-webkit-mask-image: url('https://cdn.simpleicons.org/cloudflare'); mask-image: url('https://cdn.simpleicons.org/cloudflare');"></div>
+                <div class="logo-gradient w-20 h-16" style="-webkit-mask-image: url('https://cdn.simpleicons.org/visa'); mask-image: url('https://cdn.simpleicons.org/visa');"></div>
+                <div class="logo-gradient w-20 h-16" style="-webkit-mask-image: url('https://cdn.simpleicons.org/porsche'); mask-image: url('https://cdn.simpleicons.org/porsche');"></div>
+                <div class="logo-gradient w-16 h-16" style="-webkit-mask-image: url('https://cdn.simpleicons.org/proton'); mask-image: url('https://cdn.simpleicons.org/proton');"></div>
+                <div class="logo-gradient w-16 h-16" style="-webkit-mask-image: url('https://cdn.simpleicons.org/chainlink'); mask-image: url('https://cdn.simpleicons.org/chainlink');"></div>
+                <div class="logo-gradient w-16 h-16" style="-webkit-mask-image: url('https://cdn.simpleicons.org/polygon'); mask-image: url('https://cdn.simpleicons.org/polygon');"></div>
+                <div class="logo-gradient w-16 h-16" style="-webkit-mask-image: url('https://cdn.simpleicons.org/binance'); mask-image: url('https://cdn.simpleicons.org/binance');"></div>
+                <div class="logo-gradient w-16 h-16" style="-webkit-mask-image: url('https://cdn.simpleicons.org/coinbase'); mask-image: url('https://cdn.simpleicons.org/coinbase');"></div>
+                <div class="logo-gradient w-16 h-16" style="-webkit-mask-image: url('https://cdn.simpleicons.org/aave'); mask-image: url('https://cdn.simpleicons.org/aave');"></div>
+                <div class="logo-gradient w-16 h-16" style="-webkit-mask-image: url('https://cdn.simpleicons.org/maker'); mask-image: url('https://cdn.simpleicons.org/maker');"></div>
+                <div class="logo-gradient w-24 h-16" style="-webkit-mask-image: url('https://cdn.simpleicons.org/aws'); mask-image: url('https://cdn.simpleicons.org/aws');"></div>
+
+                <!-- Quadruplicate Set -->
                 <div class="logo-gradient w-16 h-16" style="-webkit-mask-image: url('https://cdn.simpleicons.org/ethereum'); mask-image: url('https://cdn.simpleicons.org/ethereum');"></div>
                 <div class="logo-gradient w-20 h-16" style="-webkit-mask-image: url('https://cdn.simpleicons.org/uniswap'); mask-image: url('https://cdn.simpleicons.org/uniswap');"></div>
                 <div class="logo-gradient w-16 h-16" style="-webkit-mask-image: url('https://cdn.simpleicons.org/google'); mask-image: url('https://cdn.simpleicons.org/google');"></div>
