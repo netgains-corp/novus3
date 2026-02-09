@@ -35,7 +35,7 @@
                     },
                     animation: {
                         'glow': 'glow 3s ease-in-out infinite alternate',
-                        'marquee': 'marquee 25s linear infinite',
+                        'marquee': 'marquee 60s linear infinite', /* Slower speed */
                         'scroll-left': 'scrollLeft 40s linear infinite',
                         'scroll-right': 'scrollRight 40s linear infinite',
                         'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
@@ -47,7 +47,7 @@
                         },
                         marquee: {
                             '0%': { transform: 'translateX(0%)' },
-                            '100%': { transform: 'translateX(-100%)' },
+                            '100%': { transform: 'translateX(-50%)' }, /* Perfect loop point for duplicated content */
                         },
                         scrollLeft: {
                             '0%': { transform: 'translateX(0)' },
@@ -68,10 +68,9 @@
             background-color: #050505;
             color: #ffffff;
             overflow-x: hidden;
-            overflow-y: auto; /* Ensure native scroll works */
+            overflow-y: auto; 
         }
         
-        /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #050505; }
         ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
@@ -105,21 +104,33 @@
             -webkit-text-fill-color: transparent;
         }
 
-        /* 3D Tilt Effect Utilities */
-        .preserve-3d {
-            transform-style: preserve-3d;
+        /* Gradient Mask for Logos */
+        .logo-gradient {
+            background: linear-gradient(to right, #00F0FF, #BD00FF);
+            -webkit-mask-repeat: no-repeat;
+            -webkit-mask-position: center;
+            -webkit-mask-size: contain;
+            mask-repeat: no-repeat;
+            mask-position: center;
+            mask-size: contain;
+            opacity: 0.8;
+            transition: opacity 0.3s;
         }
-        .perspective-1000 {
-            perspective: 1000px;
+        .logo-gradient:hover {
+            opacity: 1;
         }
+
+        /* 3D Utilities */
+        .preserve-3d { transform-style: preserve-3d; }
+        .perspective-1000 { perspective: 1000px; }
         .translate-z-10 { transform: translateZ(20px); }
         .translate-z-20 { transform: translateZ(50px); }
 
-        /* Spline Container - Fixed background */
         #spline-container {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100vh;
-            z-index: -1; /* Behind everything */
+            z-index: -1; 
+            background-color: #050505; /* Fallback background color */
             transition: opacity 0.8s ease-in-out;
         }
         iframe { border: none; width: 100%; height: 100%; }
@@ -128,26 +139,16 @@
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100vh;
             background: radial-gradient(circle at center, transparent 0%, #050505 90%);
-            z-index: -1; /* Behind content, above spline */
+            z-index: -1; 
             pointer-events: none; 
         }
 
-        /* Interaction Fixes */
-        /* Removed the strict pointer-events: none from sections to allow scrolling everywhere */
         #navbar {
-            position: sticky; /* Sticky navbar is better for UX */
+            position: sticky; 
             top: 0;
             z-index: 50;
         }
         
-        .logo-item {
-            height: 30px;
-            width: auto;
-            opacity: 0.5;
-            transition: opacity 0.3s;
-        }
-        .logo-item:hover { opacity: 1; }
-
         .group:hover .animate-scroll-left,
         .group:hover .animate-scroll-right {
             animation-play-state: paused;
@@ -158,19 +159,18 @@
 
     <!-- BACKGROUND SYSTEM -->
     <div id="spline-container">
-        <!-- Default Start Style: TickTock Interactive Landing -->
         <iframe id="spline-frame" src='https://my.spline.design/ticktockinteractivelanding-SylE4FS9VIaBPANrCNHa9QQR/' frameborder='0' width='100%' height='100%'></iframe>
     </div>
     <div class="overlay-gradient"></div>
 
     <!-- NAVIGATION -->
     <nav class="w-full px-6 py-4 transition-all duration-300" id="navbar">
-        <!-- Added explicit border-white/40 and style override to ensure visibility -->
         <div class="max-w-7xl mx-auto flex justify-between items-center glass-panel rounded-full px-6 py-3 border-white/40" style="border-color: rgba(255,255,255,0.4);"> 
             
             <div class="flex items-center gap-2">
                 <div class="w-8 h-8 rounded bg-gradient-to-br from-novus-cyan to-novus-purple flex items-center justify-center font-bold text-black font-display text-xl">X</div>
-                <span class="font-display font-bold text-xl tracking-wider">NOVUS X</span>
+                <!-- Updated Title with Gradient and Glow -->
+                <span class="font-display font-bold text-xl tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-novus-cyan to-novus-purple drop-shadow-[0_0_8px_rgba(0,240,255,0.6)]">NOVUS X</span>
             </div>
             
             <div class="hidden md:flex gap-8 text-sm font-medium text-gray-300">
@@ -182,10 +182,8 @@
             </div>
 
             <div class="flex items-center gap-3">
-                <!-- STYLE SWITCHER BUTTON -->
                 <button onclick="toggleStyle()" class="group relative flex items-center justify-center w-10 h-10 rounded-full border border-white/20 bg-white/5 hover:bg-white/10 transition-all hover:border-novus-purple" title="Switch Visual Style">
                     <i data-lucide="layers" class="w-5 h-5 text-gray-300 group-hover:text-novus-purple transition-colors"></i>
-                    <!-- Tooltip hint (optional) -->
                     <span class="absolute top-full mt-2 left-1/2 -translate-x-1/2 px-2 py-1 bg-black/80 text-[10px] text-white rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">
                         Next Style
                     </span>
@@ -198,11 +196,9 @@
         </div>
     </nav>
 
-    <!-- MAIN CONTENT WRAPPER REMOVED - DIRECT CONTENT -->
-    
     <!-- HERO SECTION -->
-    <!-- Changed: Reduced padding-top significantly (pt-24 for mobile, md:pt-32 for desktop) -->
-    <section class="flex flex-col items-center text-center px-4 relative pt-24 pb-20 md:pt-32" id="about">
+    <!-- Reduced Padding: pt-20 / pt-24 -->
+    <section class="flex flex-col items-center text-center px-4 relative pt-20 pb-20 md:pt-24" id="about">
         <div class="gsap-hero opacity-0 translate-y-10">
             <span class="inline-block py-1 px-3 rounded-full bg-novus-cyan/10 border border-novus-cyan/30 text-novus-cyan text-xs font-mono tracking-widest mb-6">
                 VERIFIED CONTRACT • DEFI REIMAGINED
@@ -236,26 +232,43 @@
         </div>
     </section>
 
-    <!-- INFRASTRUCTURE LOGOS -->
+    <!-- INFRASTRUCTURE LOGOS (Gradient, Large & Infinity) -->
     <section class="w-full bg-black/50 border-y border-white/5 backdrop-blur-sm py-8 overflow-hidden">
-        <p class="text-center text-xs text-gray-500 uppercase tracking-widest mb-6">Powered by infrastructure trusted by</p>
+        <p class="text-center text-xs text-gray-500 uppercase tracking-widest mb-6">Powered by scalable infrastructure</p>
+        <!-- Changed w-full to w-[200%] to ensure there is enough content for seamless loop before reset -->
         <div class="relative w-full flex overflow-x-hidden group">
             <div class="animate-marquee whitespace-nowrap flex gap-16 items-center px-10">
-                <img src="https://cdn.simpleicons.org/ethereum/white" alt="Ethereum" class="logo-item">
-                <img src="https://cdn.simpleicons.org/uniswap/white" alt="Uniswap" class="logo-item">
-                <img src="https://cdn.simpleicons.org/google/white" alt="Google" class="logo-item">
-                <img src="https://cdn.simpleicons.org/cloudflare/white" alt="Cloudflare" class="logo-item">
-                <img src="https://cdn.simpleicons.org/visa/white" alt="Visa" class="logo-item">
-                <img src="https://cdn.simpleicons.org/porsche/white" alt="Porsche" class="logo-item">
-                <img src="https://cdn.simpleicons.org/proton/white" alt="Proton" class="logo-item">
-                <img src="https://cdn.simpleicons.org/chainlink/white" alt="Chainlink" class="logo-item">
-                <!-- Duplicate -->
-                <img src="https://cdn.simpleicons.org/ethereum/white" alt="Ethereum" class="logo-item">
-                <img src="https://cdn.simpleicons.org/uniswap/white" alt="Uniswap" class="logo-item">
-                <img src="https://cdn.simpleicons.org/google/white" alt="Google" class="logo-item">
-                <img src="https://cdn.simpleicons.org/cloudflare/white" alt="Cloudflare" class="logo-item">
-                <img src="https://cdn.simpleicons.org/visa/white" alt="Visa" class="logo-item">
-                <img src="https://cdn.simpleicons.org/porsche/white" alt="Porsche" class="logo-item">
+                <!-- Original Set (Doubled sizes for visibility) -->
+                <div class="logo-gradient w-16 h-16" style="-webkit-mask-image: url('https://cdn.simpleicons.org/ethereum'); mask-image: url('https://cdn.simpleicons.org/ethereum');"></div>
+                <div class="logo-gradient w-20 h-16" style="-webkit-mask-image: url('https://cdn.simpleicons.org/uniswap'); mask-image: url('https://cdn.simpleicons.org/uniswap');"></div>
+                <div class="logo-gradient w-16 h-16" style="-webkit-mask-image: url('https://cdn.simpleicons.org/google'); mask-image: url('https://cdn.simpleicons.org/google');"></div>
+                <div class="logo-gradient w-24 h-16" style="-webkit-mask-image: url('https://cdn.simpleicons.org/cloudflare'); mask-image: url('https://cdn.simpleicons.org/cloudflare');"></div>
+                <div class="logo-gradient w-20 h-16" style="-webkit-mask-image: url('https://cdn.simpleicons.org/visa'); mask-image: url('https://cdn.simpleicons.org/visa');"></div>
+                <div class="logo-gradient w-20 h-16" style="-webkit-mask-image: url('https://cdn.simpleicons.org/porsche'); mask-image: url('https://cdn.simpleicons.org/porsche');"></div>
+                <div class="logo-gradient w-16 h-16" style="-webkit-mask-image: url('https://cdn.simpleicons.org/proton'); mask-image: url('https://cdn.simpleicons.org/proton');"></div>
+                <div class="logo-gradient w-16 h-16" style="-webkit-mask-image: url('https://cdn.simpleicons.org/chainlink'); mask-image: url('https://cdn.simpleicons.org/chainlink');"></div>
+                <div class="logo-gradient w-16 h-16" style="-webkit-mask-image: url('https://cdn.simpleicons.org/polygon'); mask-image: url('https://cdn.simpleicons.org/polygon');"></div>
+                <div class="logo-gradient w-16 h-16" style="-webkit-mask-image: url('https://cdn.simpleicons.org/binance'); mask-image: url('https://cdn.simpleicons.org/binance');"></div>
+                <div class="logo-gradient w-16 h-16" style="-webkit-mask-image: url('https://cdn.simpleicons.org/coinbase'); mask-image: url('https://cdn.simpleicons.org/coinbase');"></div>
+                <div class="logo-gradient w-16 h-16" style="-webkit-mask-image: url('https://cdn.simpleicons.org/aave'); mask-image: url('https://cdn.simpleicons.org/aave');"></div>
+                <div class="logo-gradient w-16 h-16" style="-webkit-mask-image: url('https://cdn.simpleicons.org/maker'); mask-image: url('https://cdn.simpleicons.org/maker');"></div>
+                <div class="logo-gradient w-24 h-16" style="-webkit-mask-image: url('https://cdn.simpleicons.org/aws'); mask-image: url('https://cdn.simpleicons.org/aws');"></div>
+                
+                <!-- Duplicate Set (For Infinity Loop) -->
+                <div class="logo-gradient w-16 h-16" style="-webkit-mask-image: url('https://cdn.simpleicons.org/ethereum'); mask-image: url('https://cdn.simpleicons.org/ethereum');"></div>
+                <div class="logo-gradient w-20 h-16" style="-webkit-mask-image: url('https://cdn.simpleicons.org/uniswap'); mask-image: url('https://cdn.simpleicons.org/uniswap');"></div>
+                <div class="logo-gradient w-16 h-16" style="-webkit-mask-image: url('https://cdn.simpleicons.org/google'); mask-image: url('https://cdn.simpleicons.org/google');"></div>
+                <div class="logo-gradient w-24 h-16" style="-webkit-mask-image: url('https://cdn.simpleicons.org/cloudflare'); mask-image: url('https://cdn.simpleicons.org/cloudflare');"></div>
+                <div class="logo-gradient w-20 h-16" style="-webkit-mask-image: url('https://cdn.simpleicons.org/visa'); mask-image: url('https://cdn.simpleicons.org/visa');"></div>
+                <div class="logo-gradient w-20 h-16" style="-webkit-mask-image: url('https://cdn.simpleicons.org/porsche'); mask-image: url('https://cdn.simpleicons.org/porsche');"></div>
+                <div class="logo-gradient w-16 h-16" style="-webkit-mask-image: url('https://cdn.simpleicons.org/proton'); mask-image: url('https://cdn.simpleicons.org/proton');"></div>
+                <div class="logo-gradient w-16 h-16" style="-webkit-mask-image: url('https://cdn.simpleicons.org/chainlink'); mask-image: url('https://cdn.simpleicons.org/chainlink');"></div>
+                <div class="logo-gradient w-16 h-16" style="-webkit-mask-image: url('https://cdn.simpleicons.org/polygon'); mask-image: url('https://cdn.simpleicons.org/polygon');"></div>
+                <div class="logo-gradient w-16 h-16" style="-webkit-mask-image: url('https://cdn.simpleicons.org/binance'); mask-image: url('https://cdn.simpleicons.org/binance');"></div>
+                <div class="logo-gradient w-16 h-16" style="-webkit-mask-image: url('https://cdn.simpleicons.org/coinbase'); mask-image: url('https://cdn.simpleicons.org/coinbase');"></div>
+                <div class="logo-gradient w-16 h-16" style="-webkit-mask-image: url('https://cdn.simpleicons.org/aave'); mask-image: url('https://cdn.simpleicons.org/aave');"></div>
+                <div class="logo-gradient w-16 h-16" style="-webkit-mask-image: url('https://cdn.simpleicons.org/maker'); mask-image: url('https://cdn.simpleicons.org/maker');"></div>
+                <div class="logo-gradient w-24 h-16" style="-webkit-mask-image: url('https://cdn.simpleicons.org/aws'); mask-image: url('https://cdn.simpleicons.org/aws');"></div>
             </div>
         </div>
     </section>
@@ -267,20 +280,13 @@
                 <p class="text-gray-400">Directly connected to the world's most secure Layer-1 network.</p>
         </div>
 
-        <!-- 3D Tilt Card -->
         <div id="eth-container" class="perspective-1000 w-full max-w-5xl mx-auto">
             <div id="eth-card" class="relative w-full aspect-[16/9] md:aspect-[21/9] rounded-3xl overflow-hidden glass-card transition-transform duration-100 ease-out preserve-3d shadow-2xl shadow-novus-purple/10">
-                
-                <!-- Background Image (Network) -->
                 <div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 hover:scale-110" style="background-image: url('https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&q=80&w=2000'); filter: grayscale(100%) contrast(120%);"></div>
-                
-                <!-- Overlay Gradients -->
                 <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
                 <div class="absolute inset-0 bg-novus-purple/10 mix-blend-overlay"></div>
 
-                <!-- Floating Elements (3D depth) -->
                 <div class="absolute inset-0 flex items-center justify-center translate-z-20">
-                        <!-- Ethereum SVG with Glow -->
                         <div class="relative group">
                         <div class="absolute inset-0 bg-novus-purple blur-[60px] opacity-20 group-hover:opacity-40 transition-opacity"></div>
                         <svg class="relative w-32 h-32 md:w-48 md:h-48 text-gray-200 drop-shadow-2xl" viewBox="0 0 256 417" version="1.1" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid">
@@ -294,7 +300,6 @@
                         </div>
                 </div>
                 
-                <!-- Info HUD -->
                 <div class="absolute bottom-8 left-8 translate-z-10 text-left bg-black/40 backdrop-blur-md p-4 rounded-xl border border-white/10">
                     <div class="flex items-center gap-2 mb-2">
                         <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
@@ -306,9 +311,7 @@
                         Gas: <span class="text-white">12 Gwei</span>
                     </div>
                 </div>
-
-                    <!-- Grid Overlay -->
-                    <div class="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay pointer-events-none"></div>
+                <div class="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay pointer-events-none"></div>
             </div>
         </div>
     </section>
@@ -456,19 +459,17 @@
             <div class="flex gap-6 animate-scroll-left w-max">
                 <!-- Set 1 -->
                 <div class="w-72 h-48 glass-card p-1 rounded-2xl flex-shrink-0 relative overflow-hidden">
-                    <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=500" class="w-full h-full object-cover rounded-xl" alt="Team">
-                    <div class="absolute bottom-2 left-2 bg-black/60 px-2 rounded text-[10px] text-white backdrop-blur">STRATEGY</div>
+                    <img src="https://images.unsplash.com/photo-1544531586-fde5298cdd40?auto=format&fit=crop&q=80&w=500" class="w-full h-full object-cover rounded-xl" alt="Seminar Audience">
+                    <div class="absolute bottom-2 left-2 bg-black/60 px-2 rounded text-[10px] text-white backdrop-blur">CONFERENCE</div>
                 </div>
-                <!-- FIXED SERVER IMAGE -->
                 <div class="w-72 h-48 glass-card p-1 rounded-2xl flex-shrink-0 relative overflow-hidden">
                     <img src="https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&q=80&w=1000" class="w-full h-full object-cover rounded-xl" alt="Server">
                     <div class="absolute bottom-2 left-2 bg-black/60 px-2 rounded text-[10px] text-novus-cyan backdrop-blur">INFRASTRUCTURE</div>
                 </div>
                 <div class="w-72 h-48 glass-card p-1 rounded-2xl flex-shrink-0 relative overflow-hidden">
-                    <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&q=80&w=500" class="w-full h-full object-cover rounded-xl" alt="Meeting">
+                    <img src="https://images.unsplash.com/photo-1515187029135-18ee286d815b?auto=format&fit=crop&q=80&w=500" class="w-full h-full object-cover rounded-xl" alt="Meeting">
                     <div class="absolute bottom-2 left-2 bg-black/60 px-2 rounded text-[10px] text-white backdrop-blur">PARTNERSHIP</div>
                 </div>
-                <!-- FIXED PERSON IMAGE (Tech) -->
                 <div class="w-72 h-48 glass-card p-1 rounded-2xl flex-shrink-0 relative overflow-hidden">
                     <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=1000" class="w-full h-full object-cover rounded-xl" alt="Tech">
                     <div class="absolute bottom-2 left-2 bg-black/60 px-2 rounded text-[10px] text-novus-purple backdrop-blur">ENGINEERING</div>
@@ -483,19 +484,17 @@
                 </div>
                 <!-- DUPLICATE FOR LOOP -->
                 <div class="w-72 h-48 glass-card p-1 rounded-2xl flex-shrink-0 relative overflow-hidden">
-                    <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=500" class="w-full h-full object-cover rounded-xl" alt="Team">
-                    <div class="absolute bottom-2 left-2 bg-black/60 px-2 rounded text-[10px] text-white backdrop-blur">STRATEGY</div>
+                    <img src="https://images.unsplash.com/photo-1544531586-fde5298cdd40?auto=format&fit=crop&q=80&w=500" class="w-full h-full object-cover rounded-xl" alt="Seminar Audience">
+                    <div class="absolute bottom-2 left-2 bg-black/60 px-2 rounded text-[10px] text-white backdrop-blur">CONFERENCE</div>
                 </div>
-                <!-- FIXED SERVER IMAGE DUPLICATE -->
                 <div class="w-72 h-48 glass-card p-1 rounded-2xl flex-shrink-0 relative overflow-hidden">
                     <img src="https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&q=80&w=1000" class="w-full h-full object-cover rounded-xl" alt="Server">
                     <div class="absolute bottom-2 left-2 bg-black/60 px-2 rounded text-[10px] text-novus-cyan backdrop-blur">INFRASTRUCTURE</div>
                 </div>
                 <div class="w-72 h-48 glass-card p-1 rounded-2xl flex-shrink-0 relative overflow-hidden">
-                    <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&q=80&w=500" class="w-full h-full object-cover rounded-xl" alt="Meeting">
+                    <img src="https://images.unsplash.com/photo-1515187029135-18ee286d815b?auto=format&fit=crop&q=80&w=500" class="w-full h-full object-cover rounded-xl" alt="Meeting">
                     <div class="absolute bottom-2 left-2 bg-black/60 px-2 rounded text-[10px] text-white backdrop-blur">PARTNERSHIP</div>
                 </div>
-                <!-- FIXED PERSON IMAGE (Tech) DUPLICATE -->
                 <div class="w-72 h-48 glass-card p-1 rounded-2xl flex-shrink-0 relative overflow-hidden">
                     <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=1000" class="w-full h-full object-cover rounded-xl" alt="Tech">
                     <div class="absolute bottom-2 left-2 bg-black/60 px-2 rounded text-[10px] text-novus-purple backdrop-blur">ENGINEERING</div>
